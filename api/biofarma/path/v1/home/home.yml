@@ -1,0 +1,35 @@
+post:
+  tags: [home]
+  summary: 'Create'
+  description: 'Create new home data'
+  operationId: createHome
+  security: []
+  parameters:
+    - name: data
+      in: body
+      required: true
+      schema:
+        type: object
+        required:
+          - "type"
+          - "address"
+        properties: 
+          type:
+            type: number
+            format: int
+            enum:
+              - 36
+              - 45
+              - 72
+          address:
+            type: string
+
+  responses:
+    201:
+      description: 'Success create'
+      schema:
+        $ref: './../../../definitions/home.yml#/definitions/SuccessCreate'
+    default:
+      description: Server Error
+      schema:
+        $ref: './../../../../common/definitions/common.yml#/definitions/Error'

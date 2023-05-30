@@ -10,196 +10,56 @@ info:
     title: Test Biofarma
     version: 1.0.0
 paths:
-    /v1/register:
-        post:
-            tags:
-                - authentication
-            summary: Register
-            operationId: register
-            parameters:
-                - name: data
-                  in: body
-                  schema:
-                    $ref: '#/definitions/registerParamsBody'
-            responses:
-                "200":
-                    description: Success register
-                    schema:
-                        $ref: '#/definitions/successRegister'
-                default:
-                    description: Server Error
-                    schema:
-                        $ref: '#/definitions/error'
-            security: []
-            description: Register user
     /health:
         get:
+            security: []
+            description: Check if the App is Running
             tags:
                 - health
             summary: Health Check
             operationId: health
             responses:
+                default:
+                    schema:
+                        $ref: '#/definitions/error'
+                    description: Server Error
                 "200":
                     description: Health Check
                     schema:
                         $ref: '#/definitions/success'
-                default:
-                    description: Server Error
-                    schema:
-                        $ref: '#/definitions/error'
-            security: []
-            description: Check if the App is Running
-    /v1/login:
+    /v1/home:
         post:
-            responses:
-                "201":
-                    description: Success login
-                    schema:
-                        $ref: '#/definitions/successLogin'
-                    headers:
-                        token:
-                            type: string
-                default:
-                    description: Server Error
-                    schema:
-                        $ref: '#/definitions/error'
-            security: []
-            description: Login
-            tags:
-                - authentication
-            summary: Login
-            operationId: login
+            operationId: createHome
             parameters:
                 - name: data
                   in: body
+                  required: true
                   schema:
-                    $ref: '#/definitions/loginParamsBody'
-    /v1/profile:
-        get:
-            summary: Find My User Data
-            operationId: findMyUserData
+                    $ref: '#/definitions/createHomeParamsBody'
             responses:
-                "200":
-                    description: Success fetch data
+                "201":
+                    description: Success create
                     schema:
-                        $ref: '#/definitions/myUserData'
+                        $ref: '#/definitions/successCreate'
                 default:
                     description: Server Error
                     schema:
                         $ref: '#/definitions/error'
-            security:
-                - authorization: []
-            description: Find my user data
+            security: []
+            description: Create new home data
             tags:
-                - user
+                - home
+            summary: Create
 definitions:
-    success:
-        type: object
-        properties:
-            message:
-                type: string
-    successRegisterAllOf1:
-        type: object
-        properties:
-            user_id:
-                type: number
-                format: uint64
-        x-go-gen-location: models
-    userData:
-        type: object
-        properties:
-            password:
-                type: string
-                x-omitempty: false
-            username:
-                type: string
-                x-omitempty: false
-            note:
-                $ref: '#/definitions/customFields'
-    successLogin:
+    successCreate:
         allOf:
-            - $ref: '#/definitions/success'
-            - $ref: '#/definitions/successLoginAllOf1'
-    user:
+            - $ref: '#/definitions/successCreateAllOf0'
+            - $ref: '#/definitions/successCreateAllOf1'
+    Home:
         allOf:
             - $ref: '#/definitions/modelIdentifier'
             - $ref: '#/definitions/modelTrackTime'
-            - $ref: '#/definitions/userData'
-    loginParamsBody:
-        type: object
-        required:
-            - username
-            - password
-        properties:
-            password:
-                type: string
-            username:
-                type: string
-        x-go-gen-location: operations
-    myUserData:
-        type: object
-        properties:
-            note:
-                $ref: '#/definitions/customFields'
-            username:
-                type: string
-                x-omitempty: false
-    registerParamsBody:
-        required:
-            - username
-            - password
-        properties:
-            password:
-                type: string
-                minLength: !!float 8
-            username:
-                type: string
-        x-go-gen-location: operations
-        type: object
-    successRegister:
-        allOf:
-            - $ref: '#/definitions/success'
-            - $ref: '#/definitions/successRegisterAllOf1'
-    modelIdentifier:
-        properties:
-            id:
-                format: uint64
-                type: integer
-        type: object
-        required:
-            - id
-    modelTrackTime:
-        type: object
-        properties:
-            updated_at:
-                type: string
-                format: date-time
-                x-go-custom-tag: gorm:"column:updated_at"
-                x-nullable: true
-                x-omitempty: false
-            created_at:
-                type: string
-                format: date-time
-                x-go-custom-tag: gorm:"column:created_at"
-                x-nullable: true
-                x-omitempty: false
-            deleted_at:
-                format: date-time
-                x-go-custom-tag: gorm:"column:deleted_at"
-                x-nullable: true
-                x-omitempty: false
-                type: string
-    successLoginAllOf1:
-        type: object
-        properties:
-            expired_at:
-                type: string
-        x-go-gen-location: models
-    customFields:
-        type: object
-        additionalProperties:
-            type: object
-        x-go-package: time
+            - $ref: '#/definitions/homeData'
     error:
         type: object
         properties:
@@ -208,17 +68,86 @@ definitions:
             message:
                 type: string
                 example: error
-    principal:
+    modelTrackTime:
         type: object
         properties:
-            expired_at:
+            created_at:
+                x-go-custom-tag: gorm:"column:created_at"
+                x-nullable: true
+                x-omitempty: false
                 type: string
                 format: date-time
-            user_id:
+            deleted_at:
+                format: date-time
+                x-go-custom-tag: gorm:"column:deleted_at"
+                x-nullable: true
+                x-omitempty: false
+                type: string
+            updated_at:
+                type: string
+                format: date-time
+                x-go-custom-tag: gorm:"column:updated_at"
+                x-nullable: true
+                x-omitempty: false
+    success:
+        type: object
+        properties:
+            message:
+                type: string
+    successCreateAllOf1:
+        type: object
+        properties:
+            home_id:
                 type: number
                 format: uint64
-            username:
+        x-go-gen-location: models
+    createHomeParamsBody:
+        type: object
+        required:
+            - type
+            - address
+        properties:
+            address:
                 type: string
+            type:
+                type: number
+                format: int
+                enum:
+                    - !!float 36
+                    - !!float 45
+                    - !!float 72
+        x-go-gen-location: operations
+    homeData:
+        type: object
+        properties:
+            latitude:
+                type: number
+            longitude:
+                type: number
+            regency:
+                type: string
+            subdistrict:
+                type: string
+            type:
+                type: string
+            address:
+                type: string
+            country:
+                type: string
+    modelIdentifier:
+        type: object
+        required:
+            - id
+        properties:
+            id:
+                type: integer
+                format: uint64
+    successCreateAllOf0:
+        type: object
+        properties:
+            message:
+                type: string
+        x-go-gen-location: models
 securityDefinitions:
     authorization:
         type: apiKey

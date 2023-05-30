@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"biofarma/gen/restapi/operations/authentication"
+	"biofarma/gen/restapi/operations/home"
 	"biofarma/internal/repositories"
 	"biofarma/runtime"
 	"context"
@@ -9,26 +9,25 @@ import (
 
 type (
 	handler struct {
-		runtime  runtime.Runtime
-		userRepo repositories.User
+		runtime runtime.Runtime
+		repo    repositories.RepositoryInterface
 	}
 
-	Handler interface {
-		userHandler
+	HandlerInterface interface {
+		homeInterface
 	}
 
-	userHandler interface {
-		Register(ctx context.Context, req authentication.RegisterParams) (*uint64, error)
-		Login(ctx context.Context, req *authentication.LoginParams) (token, expiredAt *string, err error)
+	homeInterface interface {
+		HomeCreate(ctx context.Context, form *home.CreateHomeParams) (*uint64, error)
 	}
 )
 
 func NewHandler(
 	rt runtime.Runtime,
-	userRepo repositories.User,
-) Handler {
+	repo repositories.RepositoryInterface,
+) HandlerInterface {
 	return &handler{
 		rt,
-		userRepo,
+		repo,
 	}
 }

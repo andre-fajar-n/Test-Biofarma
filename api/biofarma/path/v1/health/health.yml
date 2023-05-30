@@ -8,8 +8,8 @@ get:
     200:
       description: 'Health Check'
       schema:
-        $ref: './../../../definitions/common.yml#/definitions/Success'
+        $ref: './../../../../common/definitions/common.yml#/definitions/Success'
     default:
       schema:
-        $ref: './../../../definitions/common.yml#/definitions/Error'
+        $ref: './../../../../common/definitions/common.yml#/definitions/Error'
       description: Server Error

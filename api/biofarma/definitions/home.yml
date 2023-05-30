@@ -1,0 +1,26 @@
+definitions:
+  HomeData:
+    type: object
+    properties:
+      type:
+        type: string
+      address:
+        type: string
+      longitude:
+        type: number
+      latitude:
+        type: number
+      country:
+        type: string
+      regency:
+        type: string
+      subdistrict:
+        type: string
+  SuccessCreate:
+    allOf:
+    - $ref: './../../common/definitions/common.yml#/definitions/Success'
+    - type: object
+      properties:
+        home_id:
+          type: number
+          format: uint64

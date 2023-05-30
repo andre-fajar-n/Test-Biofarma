@@ -59,97 +59,30 @@ func init() {
         }
       }
     },
-    "/v1/login": {
+    "/v1/home": {
       "post": {
         "security": [],
-        "description": "Login",
+        "description": "Create new home data",
         "tags": [
-          "authentication"
+          "home"
         ],
-        "summary": "Login",
-        "operationId": "login",
+        "summary": "Create",
+        "operationId": "createHome",
         "parameters": [
           {
             "name": "data",
             "in": "body",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/loginParamsBody"
+              "$ref": "#/definitions/createHomeParamsBody"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Success login",
+            "description": "Success create",
             "schema": {
-              "$ref": "#/definitions/successLogin"
-            },
-            "headers": {
-              "token": {
-                "type": "string"
-              }
-            }
-          },
-          "default": {
-            "description": "Server Error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/v1/profile": {
-      "get": {
-        "security": [
-          {
-            "authorization": []
-          }
-        ],
-        "description": "Find my user data",
-        "tags": [
-          "user"
-        ],
-        "summary": "Find My User Data",
-        "operationId": "findMyUserData",
-        "responses": {
-          "200": {
-            "description": "Success fetch data",
-            "schema": {
-              "$ref": "#/definitions/myUserData"
-            }
-          },
-          "default": {
-            "description": "Server Error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/v1/register": {
-      "post": {
-        "security": [],
-        "description": "Register user",
-        "tags": [
-          "authentication"
-        ],
-        "summary": "Register",
-        "operationId": "register",
-        "parameters": [
-          {
-            "name": "data",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/registerParamsBody"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success register",
-            "schema": {
-              "$ref": "#/definitions/successRegister"
+              "$ref": "#/definitions/successCreate"
             }
           },
           "default": {
@@ -163,12 +96,40 @@ func init() {
     }
   },
   "definitions": {
-    "customFields": {
+    "Home": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/modelIdentifier"
+        },
+        {
+          "$ref": "#/definitions/modelTrackTime"
+        },
+        {
+          "$ref": "#/definitions/homeData"
+        }
+      ]
+    },
+    "createHomeParamsBody": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
+      "required": [
+        "type",
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "type": {
+          "type": "number",
+          "format": "int",
+          "enum": [
+            36,
+            45,
+            72
+          ]
+        }
       },
-      "x-go-package": "time"
+      "x-go-gen-location": "operations"
     },
     "error": {
       "type": "object",
@@ -182,21 +143,31 @@ func init() {
         }
       }
     },
-    "loginParamsBody": {
+    "homeData": {
       "type": "object",
-      "required": [
-        "username",
-        "password"
-      ],
       "properties": {
-        "password": {
+        "address": {
           "type": "string"
         },
-        "username": {
+        "country": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        },
+        "regency": {
+          "type": "string"
+        },
+        "subdistrict": {
+          "type": "string"
+        },
+        "type": {
           "type": "string"
         }
-      },
-      "x-go-gen-location": "operations"
+      }
     },
     "modelIdentifier": {
       "type": "object",
@@ -236,51 +207,6 @@ func init() {
         }
       }
     },
-    "myUserData": {
-      "type": "object",
-      "properties": {
-        "note": {
-          "$ref": "#/definitions/customFields"
-        },
-        "username": {
-          "type": "string",
-          "x-omitempty": false
-        }
-      }
-    },
-    "principal": {
-      "type": "object",
-      "properties": {
-        "expired_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "user_id": {
-          "type": "number",
-          "format": "uint64"
-        },
-        "username": {
-          "type": "string"
-        }
-      }
-    },
-    "registerParamsBody": {
-      "type": "object",
-      "required": [
-        "username",
-        "password"
-      ],
-      "properties": {
-        "password": {
-          "type": "string",
-          "minLength": 8
-        },
-        "username": {
-          "type": "string"
-        }
-      },
-      "x-go-gen-location": "operations"
-    },
     "success": {
       "type": "object",
       "properties": {
@@ -289,73 +215,34 @@ func init() {
         }
       }
     },
-    "successLogin": {
+    "successCreate": {
       "allOf": [
         {
-          "$ref": "#/definitions/success"
+          "$ref": "#/definitions/successCreateAllOf0"
         },
         {
-          "$ref": "#/definitions/successLoginAllOf1"
+          "$ref": "#/definitions/successCreateAllOf1"
         }
       ]
     },
-    "successLoginAllOf1": {
+    "successCreateAllOf0": {
       "type": "object",
       "properties": {
-        "expired_at": {
+        "message": {
           "type": "string"
         }
       },
       "x-go-gen-location": "models"
     },
-    "successRegister": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/success"
-        },
-        {
-          "$ref": "#/definitions/successRegisterAllOf1"
-        }
-      ]
-    },
-    "successRegisterAllOf1": {
+    "successCreateAllOf1": {
       "type": "object",
       "properties": {
-        "user_id": {
+        "home_id": {
           "type": "number",
           "format": "uint64"
         }
       },
       "x-go-gen-location": "models"
-    },
-    "user": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/modelIdentifier"
-        },
-        {
-          "$ref": "#/definitions/modelTrackTime"
-        },
-        {
-          "$ref": "#/definitions/userData"
-        }
-      ]
-    },
-    "userData": {
-      "type": "object",
-      "properties": {
-        "note": {
-          "$ref": "#/definitions/customFields"
-        },
-        "password": {
-          "type": "string",
-          "x-omitempty": false
-        },
-        "username": {
-          "type": "string",
-          "x-omitempty": false
-        }
-      }
     }
   },
   "securityDefinitions": {
@@ -408,97 +295,30 @@ func init() {
         }
       }
     },
-    "/v1/login": {
+    "/v1/home": {
       "post": {
         "security": [],
-        "description": "Login",
+        "description": "Create new home data",
         "tags": [
-          "authentication"
+          "home"
         ],
-        "summary": "Login",
-        "operationId": "login",
+        "summary": "Create",
+        "operationId": "createHome",
         "parameters": [
           {
             "name": "data",
             "in": "body",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/loginParamsBody"
+              "$ref": "#/definitions/createHomeParamsBody"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Success login",
+            "description": "Success create",
             "schema": {
-              "$ref": "#/definitions/successLogin"
-            },
-            "headers": {
-              "token": {
-                "type": "string"
-              }
-            }
-          },
-          "default": {
-            "description": "Server Error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/v1/profile": {
-      "get": {
-        "security": [
-          {
-            "authorization": []
-          }
-        ],
-        "description": "Find my user data",
-        "tags": [
-          "user"
-        ],
-        "summary": "Find My User Data",
-        "operationId": "findMyUserData",
-        "responses": {
-          "200": {
-            "description": "Success fetch data",
-            "schema": {
-              "$ref": "#/definitions/myUserData"
-            }
-          },
-          "default": {
-            "description": "Server Error",
-            "schema": {
-              "$ref": "#/definitions/error"
-            }
-          }
-        }
-      }
-    },
-    "/v1/register": {
-      "post": {
-        "security": [],
-        "description": "Register user",
-        "tags": [
-          "authentication"
-        ],
-        "summary": "Register",
-        "operationId": "register",
-        "parameters": [
-          {
-            "name": "data",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/registerParamsBody"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success register",
-            "schema": {
-              "$ref": "#/definitions/successRegister"
+              "$ref": "#/definitions/successCreate"
             }
           },
           "default": {
@@ -512,12 +332,40 @@ func init() {
     }
   },
   "definitions": {
-    "customFields": {
+    "Home": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/modelIdentifier"
+        },
+        {
+          "$ref": "#/definitions/modelTrackTime"
+        },
+        {
+          "$ref": "#/definitions/homeData"
+        }
+      ]
+    },
+    "createHomeParamsBody": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
+      "required": [
+        "type",
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "type": {
+          "type": "number",
+          "format": "int",
+          "enum": [
+            36,
+            45,
+            72
+          ]
+        }
       },
-      "x-go-package": "time"
+      "x-go-gen-location": "operations"
     },
     "error": {
       "type": "object",
@@ -531,21 +379,31 @@ func init() {
         }
       }
     },
-    "loginParamsBody": {
+    "homeData": {
       "type": "object",
-      "required": [
-        "username",
-        "password"
-      ],
       "properties": {
-        "password": {
+        "address": {
           "type": "string"
         },
-        "username": {
+        "country": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        },
+        "regency": {
+          "type": "string"
+        },
+        "subdistrict": {
+          "type": "string"
+        },
+        "type": {
           "type": "string"
         }
-      },
-      "x-go-gen-location": "operations"
+      }
     },
     "modelIdentifier": {
       "type": "object",
@@ -585,51 +443,6 @@ func init() {
         }
       }
     },
-    "myUserData": {
-      "type": "object",
-      "properties": {
-        "note": {
-          "$ref": "#/definitions/customFields"
-        },
-        "username": {
-          "type": "string",
-          "x-omitempty": false
-        }
-      }
-    },
-    "principal": {
-      "type": "object",
-      "properties": {
-        "expired_at": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "user_id": {
-          "type": "number",
-          "format": "uint64"
-        },
-        "username": {
-          "type": "string"
-        }
-      }
-    },
-    "registerParamsBody": {
-      "type": "object",
-      "required": [
-        "username",
-        "password"
-      ],
-      "properties": {
-        "password": {
-          "type": "string",
-          "minLength": 8
-        },
-        "username": {
-          "type": "string"
-        }
-      },
-      "x-go-gen-location": "operations"
-    },
     "success": {
       "type": "object",
       "properties": {
@@ -638,73 +451,34 @@ func init() {
         }
       }
     },
-    "successLogin": {
+    "successCreate": {
       "allOf": [
         {
-          "$ref": "#/definitions/success"
+          "$ref": "#/definitions/successCreateAllOf0"
         },
         {
-          "$ref": "#/definitions/successLoginAllOf1"
+          "$ref": "#/definitions/successCreateAllOf1"
         }
       ]
     },
-    "successLoginAllOf1": {
+    "successCreateAllOf0": {
       "type": "object",
       "properties": {
-        "expired_at": {
+        "message": {
           "type": "string"
         }
       },
       "x-go-gen-location": "models"
     },
-    "successRegister": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/success"
-        },
-        {
-          "$ref": "#/definitions/successRegisterAllOf1"
-        }
-      ]
-    },
-    "successRegisterAllOf1": {
+    "successCreateAllOf1": {
       "type": "object",
       "properties": {
-        "user_id": {
+        "home_id": {
           "type": "number",
           "format": "uint64"
         }
       },
       "x-go-gen-location": "models"
-    },
-    "user": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/modelIdentifier"
-        },
-        {
-          "$ref": "#/definitions/modelTrackTime"
-        },
-        {
-          "$ref": "#/definitions/userData"
-        }
-      ]
-    },
-    "userData": {
-      "type": "object",
-      "properties": {
-        "note": {
-          "$ref": "#/definitions/customFields"
-        },
-        "password": {
-          "type": "string",
-          "x-omitempty": false
-        },
-        "username": {
-          "type": "string",
-          "x-omitempty": false
-        }
-      }
     }
   },
   "securityDefinitions": {

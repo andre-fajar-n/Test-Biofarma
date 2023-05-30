@@ -70,7 +70,7 @@ definitions:
       total_page:
         type: integer
 
-  customFields:
+  CustomFields:
     type: object
     additionalProperties:
       type: object

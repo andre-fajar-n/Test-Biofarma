@@ -12,9 +12,10 @@ import (
 
 	"biofarma/gen/restapi/operations"
 	"biofarma/gen/restapi/operations/health"
+	"biofarma/gen/restapi/operations/home"
 )
 
-//go:generate swagger generate server --target ../../gen --name Server --spec ../../api/go-template/result.yml --principal models.Principal --exclude-main
+//go:generate swagger generate server --target ../../gen --name Server --spec ../../api/biofarma/result.yml --principal models.Principal --exclude-main
 
 func configureFlags(api *operations.ServerAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -39,6 +40,11 @@ func configureAPI(api *operations.ServerAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	if api.HomeCreateHomeHandler == nil {
+		api.HomeCreateHomeHandler = home.CreateHomeHandlerFunc(func(params home.CreateHomeParams) middleware.Responder {
+			return middleware.NotImplemented("operation home.CreateHome has not yet been implemented")
+		})
+	}
 	if api.HealthHealthHandler == nil {
 		api.HealthHealthHandler = health.HealthHandlerFunc(func(params health.HealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation health.Health has not yet been implemented")

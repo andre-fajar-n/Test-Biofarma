@@ -24,3 +24,7 @@ parameters:
     type: string
     enum: [asc, desc]
     default: 'desc'
+  bing_maps_key:
+    description: bing maps key to use API
+    name: key
+    in: query

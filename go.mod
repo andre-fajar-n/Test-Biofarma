@@ -11,6 +11,7 @@ require (
 	github.com/go-openapi/spec v0.20.8
 	github.com/go-openapi/strfmt v0.21.3
 	github.com/go-openapi/swag v0.22.3
+	github.com/go-openapi/validate v0.22.1
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/justinas/alice v1.2.0
@@ -30,7 +31,6 @@ require (
 	github.com/go-openapi/analysis v0.21.4 // indirect
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
-	github.com/go-openapi/validate v0.22.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

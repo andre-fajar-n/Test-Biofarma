@@ -16,32 +16,13 @@ paths:
   /health:
     $ref: ./path/v1/health/health.yml
 
-  # authentication
-  /v1/register:
-    $ref: ./path/v1/authentication/register.yml
-
-  /v1/login:
-    $ref: ./path/v1/authentication/login.yml
-
-  # user
-  /v1/profile:
-    $ref: ./path/v1/user/profile.yml
+  # home
+  /v1/home:
+    $ref: ./path/v1/home/home.yml
 
 definitions:
-  principal:
-    type: object
-    properties:
-      username:
-        type: string
-      user_id:
-        type: number
-        format: uint64
-      expired_at:
-        type: string
-        format: date-time
-
-  user:
+  Home:
     allOf:
-      - $ref: "./definitions/common.yml#/definitions/ModelIdentifier"
-      - $ref: "./definitions/common.yml#/definitions/ModelTrackTime"
-      - $ref: "./definitions/user.yml#/definitions/userData"
+      - $ref: "./../common/definitions/common.yml#/definitions/ModelIdentifier"
+      - $ref: "./../common/definitions/common.yml#/definitions/ModelTrackTime"
+      - $ref: "./definitions/home.yml#/definitions/HomeData"
