@@ -1,0 +1,20 @@
+get:
+  tags: [location]
+  summary: 'Find Location'
+  description: 'Find location'
+  operationId: findLocation
+  security: []
+  parameters:
+    - $ref: ./../../../parameters/common.yml#/parameters/bing_maps_key
+    - name: query
+      in: query
+      type: string
+  responses:
+    200:
+      description: 'Success get data'
+      schema:
+        $ref: './../../../definitions/location.yml#/definitions/SuccessGetLocation'
+    default:
+      description: Server Error
+      schema:
+        $ref: './../../../../common/definitions/common.yml#/definitions/Error'

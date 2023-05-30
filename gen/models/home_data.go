@@ -20,14 +20,23 @@ type HomeData struct {
 	// address
 	Address string `json:"address,omitempty"`
 
+	// address line
+	AddressLine string `json:"address_line,omitempty"`
+
 	// country
 	Country string `json:"country,omitempty"`
+
+	// formatted address
+	FormattedAddress string `json:"formatted_address,omitempty"`
 
 	// latitude
 	Latitude float64 `json:"latitude,omitempty"`
 
 	// longitude
 	Longitude float64 `json:"longitude,omitempty"`
+
+	// postal code
+	PostalCode string `json:"postal_code,omitempty"`
 
 	// regency
 	Regency string `json:"regency,omitempty"`

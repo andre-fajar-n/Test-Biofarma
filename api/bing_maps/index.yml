@@ -1,0 +1,12 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: Bing Maps
+schemes: [http]
+consumes: [application/json, multipart/form-data]
+produces: [application/json]
+basePath: /REST
+
+paths:
+  /v1/Locations:
+    $ref: ./paths/v1/location/find_location.yml

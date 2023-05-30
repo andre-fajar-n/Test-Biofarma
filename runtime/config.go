@@ -18,6 +18,9 @@ type (
 
 		JwtSecret string `mapstructure:"JWT_SECRET"`
 		JwtExp    int    `mapstructure:"JWT_EXP"`
+
+		BingMapsKey  string `mapstructure:"BING_MAPS_KEY"`
+		BingMapsHost string `mapstructure:"BING_MAPS_HOST"`
 	}
 )
 

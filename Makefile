@@ -7,6 +7,7 @@ validate:
 
 spec:
 	swagger flatten ./api/biofarma/index.yml -o=./api/biofarma/result.yml --format=yaml --with-flatten=full
+	swagger flatten ./api/bing_maps/index.yml -o=./api/bing_maps/result.yml --format=yaml --with-flatten=full
 
 build: 
 	CGO_ENABLED=0 GOOS=linux go build -v -installsuffix cgo ./cmd/cli
@@ -21,14 +22,15 @@ doc: validate
 	swagger serve api/biofarma/index.yml --no-open --host=0.0.0.0 --port=8080 --base-path=/
 
 clean:
-	# remove all files inside /gen/models except custom_fields_valuer_scanner.go
-	find ./gen/models -mindepth 1 -name custom_fields_valuer_scanner.go -prune -o -exec rm -rf {} +
-	rm -rf server
+	rm -rf cli
+	rm -rf ./gen/client
+	rm -rf ./gen/models
 	rm -rf ./gen/restapi
 	go clean -i .
 
 generate: validate
 	swagger generate server --exclude-main -A server -t gen -f ./api/biofarma/result.yml --principal models.Principal
+	swagger generate client -A bing-maps -c gen/client/bing_maps_client -m gen/models -f ./api/bing_maps/result.yml
 
 create-file-migration:
 	go run cmd/cli/main.go migration create $(Arguments)

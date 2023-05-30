@@ -1,0 +1,46 @@
+definitions:
+  SuccessGetLocation:
+    type: object
+    properties:
+      authenticationResultCode:
+        type: string
+      resourceSets:
+        type: array
+        items:
+          type: object
+          properties:
+            estimatedTotal:
+              type: number
+              format: int64
+            resources:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  point:
+                    type: object
+                    properties:
+                      coordinates:
+                        type: array
+                        items:
+                          type: number
+                          format: float64
+                  address:
+                    type: object
+                    properties:
+                      adminDistrict:
+                        type: string
+                      adminDistrict2:
+                        type: string
+                      countryRegion:
+                        type: string
+                      formattedAddress:
+                        type: string
+                      locality:
+                        type: string
+                      postalCode:
+                        type: string
+                      addressLine:
+                        type: string

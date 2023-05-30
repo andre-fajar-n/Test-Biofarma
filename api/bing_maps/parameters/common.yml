@@ -1,0 +1,5 @@
+parameters:
+  bing_maps_key:
+    name: key
+    in: query
+    type: string

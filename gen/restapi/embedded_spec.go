@@ -149,7 +149,13 @@ func init() {
         "address": {
           "type": "string"
         },
+        "address_line": {
+          "type": "string"
+        },
         "country": {
+          "type": "string"
+        },
+        "formatted_address": {
           "type": "string"
         },
         "latitude": {
@@ -157,6 +163,9 @@ func init() {
         },
         "longitude": {
           "type": "number"
+        },
+        "postal_code": {
+          "type": "string"
         },
         "regency": {
           "type": "string"
@@ -385,7 +394,13 @@ func init() {
         "address": {
           "type": "string"
         },
+        "address_line": {
+          "type": "string"
+        },
         "country": {
+          "type": "string"
+        },
+        "formatted_address": {
           "type": "string"
         },
         "latitude": {
@@ -393,6 +408,9 @@ func init() {
         },
         "longitude": {
           "type": "number"
+        },
+        "postal_code": {
+          "type": "string"
         },
         "regency": {
           "type": "string"

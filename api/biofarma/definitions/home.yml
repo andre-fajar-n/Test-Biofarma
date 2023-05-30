@@ -6,6 +6,8 @@ definitions:
         type: string
       address:
         type: string
+      formatted_address:
+        type: string
       longitude:
         type: number
       latitude:
@@ -16,6 +18,11 @@ definitions:
         type: string
       subdistrict:
         type: string
+      postal_code:
+        type: string
+      address_line:
+        type: string
+
   SuccessCreate:
     allOf:
     - $ref: './../../common/definitions/common.yml#/definitions/Success'

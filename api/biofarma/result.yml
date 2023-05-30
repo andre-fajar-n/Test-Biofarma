@@ -19,23 +19,16 @@ paths:
             summary: Health Check
             operationId: health
             responses:
-                default:
-                    schema:
-                        $ref: '#/definitions/error'
-                    description: Server Error
                 "200":
                     description: Health Check
                     schema:
                         $ref: '#/definitions/success'
+                default:
+                    description: Server Error
+                    schema:
+                        $ref: '#/definitions/error'
     /v1/home:
         post:
-            operationId: createHome
-            parameters:
-                - name: data
-                  in: body
-                  required: true
-                  schema:
-                    $ref: '#/definitions/createHomeParamsBody'
             responses:
                 "201":
                     description: Success create
@@ -50,56 +43,62 @@ paths:
             tags:
                 - home
             summary: Create
+            operationId: createHome
+            parameters:
+                - required: true
+                  schema:
+                    $ref: '#/definitions/createHomeParamsBody'
+                  name: data
+                  in: body
 definitions:
-    successCreate:
-        allOf:
-            - $ref: '#/definitions/successCreateAllOf0'
-            - $ref: '#/definitions/successCreateAllOf1'
     Home:
         allOf:
             - $ref: '#/definitions/modelIdentifier'
             - $ref: '#/definitions/modelTrackTime'
             - $ref: '#/definitions/homeData'
-    error:
+    homeData:
         type: object
         properties:
-            code:
+            type:
+                type: string
+            address:
+                type: string
+            address_line:
+                type: string
+            country:
+                type: string
+            latitude:
+                type: number
+            subdistrict:
+                type: string
+            formatted_address:
+                type: string
+            longitude:
+                type: number
+            postal_code:
+                type: string
+            regency:
+                type: string
+    modelIdentifier:
+        required:
+            - id
+        properties:
+            id:
                 type: integer
-            message:
-                type: string
-                example: error
-    modelTrackTime:
+                format: uint64
         type: object
-        properties:
-            created_at:
-                x-go-custom-tag: gorm:"column:created_at"
-                x-nullable: true
-                x-omitempty: false
-                type: string
-                format: date-time
-            deleted_at:
-                format: date-time
-                x-go-custom-tag: gorm:"column:deleted_at"
-                x-nullable: true
-                x-omitempty: false
-                type: string
-            updated_at:
-                type: string
-                format: date-time
-                x-go-custom-tag: gorm:"column:updated_at"
-                x-nullable: true
-                x-omitempty: false
-    success:
-        type: object
-        properties:
-            message:
-                type: string
     successCreateAllOf1:
+        x-go-gen-location: models
         type: object
         properties:
             home_id:
                 type: number
                 format: uint64
+    successCreateAllOf0:
+        type: object
+        properties:
+            message:
+                type: string
         x-go-gen-location: models
     createHomeParamsBody:
         type: object
@@ -110,46 +109,53 @@ definitions:
             address:
                 type: string
             type:
-                type: number
                 format: int
                 enum:
                     - !!float 36
                     - !!float 45
                     - !!float 72
+                type: number
         x-go-gen-location: operations
-    homeData:
+    error:
         type: object
         properties:
-            latitude:
-                type: number
-            longitude:
-                type: number
-            regency:
-                type: string
-            subdistrict:
-                type: string
-            type:
-                type: string
-            address:
-                type: string
-            country:
-                type: string
-    modelIdentifier:
-        type: object
-        required:
-            - id
-        properties:
-            id:
+            code:
                 type: integer
-                format: uint64
-    successCreateAllOf0:
+            message:
+                type: string
+                example: error
+    modelTrackTime:
+        properties:
+            created_at:
+                x-go-custom-tag: gorm:"column:created_at"
+                x-nullable: true
+                x-omitempty: false
+                type: string
+                format: date-time
+            deleted_at:
+                type: string
+                format: date-time
+                x-go-custom-tag: gorm:"column:deleted_at"
+                x-nullable: true
+                x-omitempty: false
+            updated_at:
+                type: string
+                format: date-time
+                x-go-custom-tag: gorm:"column:updated_at"
+                x-nullable: true
+                x-omitempty: false
+        type: object
+    success:
         type: object
         properties:
             message:
                 type: string
-        x-go-gen-location: models
+    successCreate:
+        allOf:
+            - $ref: '#/definitions/successCreateAllOf0'
+            - $ref: '#/definitions/successCreateAllOf1'
 securityDefinitions:
     authorization:
+        in: header
         type: apiKey
         name: Authorization
-        in: header

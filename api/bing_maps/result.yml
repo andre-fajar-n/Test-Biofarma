@@ -1,0 +1,103 @@
+consumes:
+    - application/json
+    - multipart/form-data
+produces:
+    - application/json
+schemes:
+    - http
+swagger: "2.0"
+info:
+    title: Bing Maps
+    version: 1.0.0
+basePath: /REST
+paths:
+    /v1/Locations:
+        get:
+            summary: Find Location
+            operationId: findLocation
+            parameters:
+                - type: string
+                  name: key
+                  in: query
+                - in: query
+                  type: string
+                  name: query
+            responses:
+                "200":
+                    description: Success get data
+                    schema:
+                        $ref: '#/definitions/successGetLocation'
+                default:
+                    description: Server Error
+                    schema:
+                        $ref: '#/definitions/error'
+            security: []
+            description: Find location
+            tags:
+                - location
+definitions:
+    error:
+        type: object
+        properties:
+            code:
+                type: integer
+            message:
+                type: string
+                example: error
+    successGetLocation:
+        type: object
+        properties:
+            resourceSets:
+                type: array
+                items:
+                    $ref: '#/definitions/successGetLocationResourceSetsItems'
+            authenticationResultCode:
+                type: string
+    successGetLocationResourceSetsItems:
+        x-go-gen-location: models
+        type: object
+        properties:
+            estimatedTotal:
+                type: number
+                format: int64
+            resources:
+                type: array
+                items:
+                    $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItems'
+    successGetLocationResourceSetsItemsResourcesItems:
+        properties:
+            address:
+                $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsAddress'
+            name:
+                type: string
+            point:
+                $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsPoint'
+        x-go-gen-location: models
+        type: object
+    successGetLocationResourceSetsItemsResourcesItemsAddress:
+        type: object
+        properties:
+            postalCode:
+                type: string
+            addressLine:
+                type: string
+            adminDistrict:
+                type: string
+            adminDistrict2:
+                type: string
+            countryRegion:
+                type: string
+            formattedAddress:
+                type: string
+            locality:
+                type: string
+        x-go-gen-location: models
+    successGetLocationResourceSetsItemsResourcesItemsPoint:
+        type: object
+        properties:
+            coordinates:
+                type: array
+                items:
+                    type: number
+                    format: float64
+        x-go-gen-location: models
