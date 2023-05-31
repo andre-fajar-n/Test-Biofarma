@@ -5,7 +5,7 @@ get:
   operationId: findLocation
   security: []
   parameters:
-    - $ref: ./../../../parameters/common.yml#/parameters/bing_maps_key
+    - $ref: ./../../../parameters/common.yml#/parameters/BingMapsKey
     - name: query
       in: query
       type: string

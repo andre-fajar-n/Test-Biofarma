@@ -1,5 +1,5 @@
 parameters:
-  bing_maps_key:
+  BingMapsKey:
     name: key
     in: query
     type: string

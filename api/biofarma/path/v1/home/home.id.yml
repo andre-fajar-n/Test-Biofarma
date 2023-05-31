@@ -1,17 +1,18 @@
-post:
+put:
   tags: [home]
-  summary: 'Create'
-  description: 'Create new home data'
-  operationId: createHome
+  summary: 'Update'
+  description: 'Update home data'
+  operationId: UpdateHome
   security: []
   parameters:
+    - $ref: ./../../../parameters/home.yml#/parameters/PathHomeID
     - $ref: ./../../../parameters/home.yml#/parameters/CreateOrUpdateBody
 
   responses:
-    201:
-      description: 'Success create'
+    200:
+      description: 'Success update'
       schema:
-        $ref: './../../../definitions/home.yml#/definitions/SuccessCreate'
+        $ref: './../../../../common/definitions/common.yml#/definitions/Success'
     default:
       description: Server Error
       schema:

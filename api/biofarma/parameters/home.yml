@@ -1,0 +1,27 @@
+parameters:
+  PathHomeID:
+    name: home_id
+    in: path
+    type: integer
+    required: true
+    format: uint64
+
+  CreateOrUpdateBody:
+    name: data
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "type"
+        - "address"
+      properties: 
+        type:
+          type: number
+          format: int
+          enum:
+            - 36
+            - 45
+            - 72
+        address:
+          type: string

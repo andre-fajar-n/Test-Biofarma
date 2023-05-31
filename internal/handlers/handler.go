@@ -18,7 +18,8 @@ type (
 	}
 
 	homeInterface interface {
-		HomeCreate(ctx context.Context, form *home.CreateHomeParams) (*uint64, error)
+		CreateHome(ctx context.Context, form *home.CreateHomeParams) (*uint64, error)
+		UpdateHome(ctx context.Context, form *home.UpdateHomeParams) error
 	}
 )
 

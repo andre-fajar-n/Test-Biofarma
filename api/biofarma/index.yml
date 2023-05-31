@@ -20,6 +20,9 @@ paths:
   /v1/home:
     $ref: ./path/v1/home/home.yml
 
+  /v1/home/{home_id}:
+    $ref: ./path/v1/home/home.id.yml
+
 definitions:
   Home:
     allOf:

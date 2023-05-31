@@ -23,7 +23,7 @@ func Route(rt *runtime.Runtime, api *operations.ServerAPI, apiHandler handlers.H
 	// home
 	{
 		api.HomeCreateHomeHandler = home.CreateHomeHandlerFunc(func(chp home.CreateHomeParams) middleware.Responder {
-			homeID, err := apiHandler.HomeCreate(context.Background(), &chp)
+			homeID, err := apiHandler.CreateHome(context.Background(), &chp)
 			if err != nil {
 				errRes := rt.GetError(err)
 				return home.NewCreateHomeDefault(int(errRes.Code())).WithPayload(&models.Error{
@@ -39,6 +39,21 @@ func Route(rt *runtime.Runtime, api *operations.ServerAPI, apiHandler handlers.H
 				SuccessCreateAllOf1: models.SuccessCreateAllOf1{
 					HomeID: *homeID,
 				},
+			})
+		})
+
+		api.HomeUpdateHomeHandler = home.UpdateHomeHandlerFunc(func(uhp home.UpdateHomeParams) middleware.Responder {
+			err := apiHandler.UpdateHome(context.Background(), &uhp)
+			if err != nil {
+				errRes := rt.GetError(err)
+				return home.NewUpdateHomeDefault(int(errRes.Code())).WithPayload(&models.Error{
+					Code:    int64(errRes.Code()),
+					Message: errRes.Error(),
+				})
+			}
+
+			return home.NewUpdateHomeOK().WithPayload(&models.Success{
+				Message: "Success update home",
 			})
 		})
 	}

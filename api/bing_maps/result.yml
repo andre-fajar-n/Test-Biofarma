@@ -13,15 +13,13 @@ basePath: /REST
 paths:
     /v1/Locations:
         get:
-            summary: Find Location
-            operationId: findLocation
             parameters:
-                - type: string
-                  name: key
-                  in: query
                 - in: query
                   type: string
+                  name: key
+                - type: string
                   name: query
+                  in: query
             responses:
                 "200":
                     description: Success get data
@@ -35,6 +33,8 @@ paths:
             description: Find location
             tags:
                 - location
+            summary: Find Location
+            operationId: findLocation
 definitions:
     error:
         type: object
@@ -47,14 +47,13 @@ definitions:
     successGetLocation:
         type: object
         properties:
+            authenticationResultCode:
+                type: string
             resourceSets:
                 type: array
                 items:
                     $ref: '#/definitions/successGetLocationResourceSetsItems'
-            authenticationResultCode:
-                type: string
     successGetLocationResourceSetsItems:
-        x-go-gen-location: models
         type: object
         properties:
             estimatedTotal:
@@ -64,7 +63,9 @@ definitions:
                 type: array
                 items:
                     $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItems'
+        x-go-gen-location: models
     successGetLocationResourceSetsItemsResourcesItems:
+        type: object
         properties:
             address:
                 $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsAddress'
@@ -73,12 +74,9 @@ definitions:
             point:
                 $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsPoint'
         x-go-gen-location: models
-        type: object
     successGetLocationResourceSetsItemsResourcesItemsAddress:
         type: object
         properties:
-            postalCode:
-                type: string
             addressLine:
                 type: string
             adminDistrict:
@@ -90,6 +88,8 @@ definitions:
             formattedAddress:
                 type: string
             locality:
+                type: string
+            postalCode:
                 type: string
         x-go-gen-location: models
     successGetLocationResourceSetsItemsResourcesItemsPoint:

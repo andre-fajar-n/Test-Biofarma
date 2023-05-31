@@ -93,6 +93,48 @@ func init() {
           }
         }
       }
+    },
+    "/v1/home/{home_id}": {
+      "put": {
+        "security": [],
+        "description": "Update home data",
+        "tags": [
+          "home"
+        ],
+        "summary": "Update",
+        "operationId": "UpdateHome",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "name": "home_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateHomeParamsBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success update",
+            "schema": {
+              "$ref": "#/definitions/success"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -252,6 +294,28 @@ func init() {
         }
       },
       "x-go-gen-location": "models"
+    },
+    "updateHomeParamsBody": {
+      "type": "object",
+      "required": [
+        "type",
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "type": {
+          "type": "number",
+          "format": "int",
+          "enum": [
+            36,
+            45,
+            72
+          ]
+        }
+      },
+      "x-go-gen-location": "operations"
     }
   },
   "securityDefinitions": {
@@ -338,6 +402,48 @@ func init() {
           }
         }
       }
+    },
+    "/v1/home/{home_id}": {
+      "put": {
+        "security": [],
+        "description": "Update home data",
+        "tags": [
+          "home"
+        ],
+        "summary": "Update",
+        "operationId": "UpdateHome",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "name": "home_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateHomeParamsBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success update",
+            "schema": {
+              "$ref": "#/definitions/success"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -497,6 +603,28 @@ func init() {
         }
       },
       "x-go-gen-location": "models"
+    },
+    "updateHomeParamsBody": {
+      "type": "object",
+      "required": [
+        "type",
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "type": {
+          "type": "number",
+          "format": "int",
+          "enum": [
+            36,
+            45,
+            72
+          ]
+        }
+      },
+      "x-go-gen-location": "operations"
     }
   },
   "securityDefinitions": {
