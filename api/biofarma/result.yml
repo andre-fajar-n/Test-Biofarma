@@ -20,15 +20,66 @@ paths:
             operationId: health
             responses:
                 "200":
+                    description: Health Check
                     schema:
                         $ref: '#/definitions/success'
-                    description: Health Check
                 default:
                     description: Server Error
                     schema:
                         $ref: '#/definitions/error'
     /v1/home:
+        get:
+            responses:
+                "200":
+                    description: Success get data
+                    schema:
+                        $ref: '#/definitions/successFindAllPagination'
+                default:
+                    description: Server Error
+                    schema:
+                        $ref: '#/definitions/error'
+            security: []
+            description: Find all home data with pagination
+            tags:
+                - home
+            summary: Find All Pagination
+            operationId: FindAllPaginationHome
+            parameters:
+                - enum:
+                    - "true"
+                    - "false"
+                  type: string
+                  default: "false"
+                  description: flag for identify include deleted data or not
+                  name: include_deleted_data
+                  in: query
+                - description: default parameter for pagination page
+                  name: page
+                  in: query
+                  type: integer
+                  default: !!float 1
+                - type: integer
+                  default: !!float 10
+                  description: default parameter for limit pagination
+                  name: limit
+                  in: query
+                - type: string
+                  default: created_at
+                  description: default parameter for order pagination
+                  name: order_by
+                  in: query
+                - in: query
+                  enum:
+                    - asc
+                    - desc
+                  type: string
+                  default: desc
+                  description: default parameter for sort pagination
+                  name: sort_by
         post:
+            tags:
+                - home
+            summary: Create
             operationId: createHome
             parameters:
                 - name: data
@@ -42,25 +93,13 @@ paths:
                     schema:
                         $ref: '#/definitions/successCreate'
                 default:
+                    description: Server Error
                     schema:
                         $ref: '#/definitions/error'
-                    description: Server Error
             security: []
             description: Create new home data
-            tags:
-                - home
-            summary: Create
     /v1/home/{home_id}:
         get:
-            responses:
-                "200":
-                    description: Success get data
-                    schema:
-                        $ref: '#/definitions/successFindOne'
-                default:
-                    description: Server Error
-                    schema:
-                        $ref: '#/definitions/error'
             security: []
             description: Find one home data
             tags:
@@ -73,15 +112,33 @@ paths:
                   name: home_id
                   in: path
                   required: true
-                - default: "false"
-                  description: flag for identify include deleted data or not
-                  name: include_deleted_data
-                  in: query
-                  enum:
+                - enum:
                     - "true"
                     - "false"
                   type: string
+                  default: "false"
+                  description: flag for identify include deleted data or not
+                  name: include_deleted_data
+                  in: query
+            responses:
+                "200":
+                    description: Success get data
+                    schema:
+                        $ref: '#/definitions/successFindOne'
+                default:
+                    description: Server Error
+                    schema:
+                        $ref: '#/definitions/error'
         put:
+            responses:
+                "200":
+                    description: Success update
+                    schema:
+                        $ref: '#/definitions/success'
+                default:
+                    schema:
+                        $ref: '#/definitions/error'
+                    description: Server Error
             security: []
             description: Update home data
             tags:
@@ -89,38 +146,24 @@ paths:
             summary: Update
             operationId: UpdateHome
             parameters:
+                - name: home_id
+                  in: path
+                  required: true
+                  type: integer
+                  format: uint64
+                - in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/updateHomeParamsBody'
+                  name: data
+        delete:
+            operationId: DeleteHome
+            parameters:
                 - required: true
                   type: integer
                   format: uint64
                   name: home_id
                   in: path
-                - name: data
-                  in: body
-                  required: true
-                  schema:
-                    $ref: '#/definitions/updateHomeParamsBody'
-            responses:
-                default:
-                    schema:
-                        $ref: '#/definitions/error'
-                    description: Server Error
-                "200":
-                    schema:
-                        $ref: '#/definitions/success'
-                    description: Success update
-        delete:
-            security: []
-            description: Delete home data
-            tags:
-                - home
-            summary: Delete
-            operationId: DeleteHome
-            parameters:
-                - type: integer
-                  format: uint64
-                  name: home_id
-                  in: path
-                  required: true
             responses:
                 "200":
                     description: Success delete data
@@ -130,36 +173,12 @@ paths:
                     description: Server Error
                     schema:
                         $ref: '#/definitions/error'
+            security: []
+            description: Delete home data
+            tags:
+                - home
+            summary: Delete
 definitions:
-    homeData:
-        type: object
-        properties:
-            address:
-                type: string
-            latitude:
-                type: number
-            longitude:
-                type: number
-            type:
-                type: string
-            address_line:
-                type: string
-            country:
-                type: string
-            formatted_address:
-                type: string
-            postal_code:
-                type: string
-            regency:
-                type: string
-            subdistrict:
-                type: string
-    successCreateAllOf0:
-        properties:
-            message:
-                type: string
-        x-go-gen-location: models
-        type: object
     successCreate:
         allOf:
             - $ref: '#/definitions/successCreateAllOf0'
@@ -171,11 +190,30 @@ definitions:
                 type: number
                 format: uint64
         x-go-gen-location: models
+    successFindAllPaginationAllOf1:
+        type: object
+        properties:
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/successFindOneAllOf1Data'
+            metadata:
+                $ref: '#/definitions/successFindAllPaginationAllOf1Metadata'
+        x-go-gen-location: models
+    success:
+        type: object
+        properties:
+            message:
+                type: string
+    successFindAllPagination:
+        allOf:
+            - $ref: '#/definitions/successCreateAllOf0'
+            - $ref: '#/definitions/successFindAllPaginationAllOf1'
     successFindOne:
         allOf:
             - $ref: '#/definitions/successCreateAllOf0'
             - $ref: '#/definitions/successFindOneAllOf1'
-    updateHomeParamsBody:
+    createHomeParamsBody:
         type: object
         required:
             - type
@@ -190,6 +228,49 @@ definitions:
                     - !!float 72
                 type: number
                 format: int
+        x-go-gen-location: operations
+    customFields:
+        type: object
+        additionalProperties:
+            type: object
+        x-go-package: time
+    metadata:
+        type: object
+        properties:
+            total_page:
+                type: integer
+            total_row:
+                type: integer
+            page:
+                type: integer
+            per_page:
+                type: integer
+    successFindAllPaginationAllOf1Metadata:
+        allOf:
+            - $ref: '#/definitions/metadata'
+            - $ref: '#/definitions/customFields'
+        x-go-gen-location: models
+    successFindOneAllOf1Data:
+        allOf:
+            - $ref: '#/definitions/modelIdentifier'
+            - $ref: '#/definitions/homeData'
+            - $ref: '#/definitions/modelTrackTime'
+        x-go-gen-location: models
+    updateHomeParamsBody:
+        type: object
+        required:
+            - type
+            - address
+        properties:
+            address:
+                type: string
+            type:
+                type: number
+                format: int
+                enum:
+                    - !!float 36
+                    - !!float 45
+                    - !!float 72
         x-go-gen-location: operations
     Home:
         allOf:
@@ -202,69 +283,68 @@ definitions:
             code:
                 type: integer
             message:
+                type: string
                 example: error
-                type: string
-    modelTrackTime:
+    homeData:
         type: object
-        properties:
-            created_at:
-                format: date-time
-                x-go-custom-tag: gorm:"column:created_at"
-                x-nullable: true
-                x-omitempty: false
-                type: string
-            deleted_at:
-                format: date-time
-                x-go-custom-tag: gorm:"deleted_at"
-                x-nullable: true
-                x-omitempty: false
-                type: string
-            updated_at:
-                type: string
-                format: date-time
-                x-go-custom-tag: gorm:"column:updated_at"
-                x-nullable: true
-                x-omitempty: false
-    createHomeParamsBody:
-        x-go-gen-location: operations
-        type: object
-        required:
-            - type
-            - address
         properties:
             address:
                 type: string
+            address_line:
+                type: string
+            formatted_address:
+                type: string
+            postal_code:
+                type: string
+            regency:
+                type: string
             type:
+                type: string
+            country:
+                type: string
+            latitude:
                 type: number
-                format: int
-                enum:
-                    - !!float 36
-                    - !!float 45
-                    - !!float 72
+            longitude:
+                type: number
+            subdistrict:
+                type: string
     modelIdentifier:
-        type: object
         required:
             - id
         properties:
             id:
                 type: integer
                 format: uint64
+        type: object
+    modelTrackTime:
+        type: object
+        properties:
+            created_at:
+                x-nullable: true
+                x-omitempty: false
+                type: string
+                format: date-time
+            deleted_at:
+                x-omitempty: false
+                type: string
+                format: date-time
+                x-nullable: true
+            updated_at:
+                format: date-time
+                x-nullable: true
+                x-omitempty: false
+                type: string
+    successCreateAllOf0:
+        properties:
+            message:
+                type: string
+        x-go-gen-location: models
+        type: object
     successFindOneAllOf1:
         type: object
         properties:
             data:
                 $ref: '#/definitions/successFindOneAllOf1Data'
-        x-go-gen-location: models
-    success:
-        type: object
-        properties:
-            message:
-                type: string
-    successFindOneAllOf1Data:
-        allOf:
-            - $ref: '#/definitions/modelIdentifier'
-            - $ref: '#/definitions/homeData'
-            - $ref: '#/definitions/modelTrackTime'
         x-go-gen-location: models
 securityDefinitions:
     authorization:

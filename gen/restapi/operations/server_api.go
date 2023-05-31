@@ -49,6 +49,9 @@ func NewServerAPI(spec *loads.Document) *ServerAPI {
 		HomeDeleteHomeHandler: home.DeleteHomeHandlerFunc(func(params home.DeleteHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.DeleteHome has not yet been implemented")
 		}),
+		HomeFindAllPaginationHomeHandler: home.FindAllPaginationHomeHandlerFunc(func(params home.FindAllPaginationHomeParams) middleware.Responder {
+			return middleware.NotImplemented("operation home.FindAllPaginationHome has not yet been implemented")
+		}),
 		HomeFindOneHomeHandler: home.FindOneHomeHandlerFunc(func(params home.FindOneHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.FindOneHome has not yet been implemented")
 		}),
@@ -102,6 +105,8 @@ type ServerAPI struct {
 
 	// HomeDeleteHomeHandler sets the operation handler for the delete home operation
 	HomeDeleteHomeHandler home.DeleteHomeHandler
+	// HomeFindAllPaginationHomeHandler sets the operation handler for the find all pagination home operation
+	HomeFindAllPaginationHomeHandler home.FindAllPaginationHomeHandler
 	// HomeFindOneHomeHandler sets the operation handler for the find one home operation
 	HomeFindOneHomeHandler home.FindOneHomeHandler
 	// HomeUpdateHomeHandler sets the operation handler for the update home operation
@@ -192,6 +197,9 @@ func (o *ServerAPI) Validate() error {
 
 	if o.HomeDeleteHomeHandler == nil {
 		unregistered = append(unregistered, "home.DeleteHomeHandler")
+	}
+	if o.HomeFindAllPaginationHomeHandler == nil {
+		unregistered = append(unregistered, "home.FindAllPaginationHomeHandler")
 	}
 	if o.HomeFindOneHomeHandler == nil {
 		unregistered = append(unregistered, "home.FindOneHomeHandler")
@@ -299,6 +307,10 @@ func (o *ServerAPI) initHandlerCache() {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
 	o.handlers["DELETE"]["/v1/home/{home_id}"] = home.NewDeleteHome(o.context, o.HomeDeleteHomeHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/v1/home"] = home.NewFindAllPaginationHome(o.context, o.HomeFindAllPaginationHomeHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

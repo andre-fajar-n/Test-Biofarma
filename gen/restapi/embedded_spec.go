@@ -60,6 +60,74 @@ func init() {
       }
     },
     "/v1/home": {
+      "get": {
+        "security": [],
+        "description": "Find all home data with pagination",
+        "tags": [
+          "home"
+        ],
+        "summary": "Find All Pagination",
+        "operationId": "FindAllPaginationHome",
+        "parameters": [
+          {
+            "enum": [
+              "true",
+              "false"
+            ],
+            "type": "string",
+            "default": "false",
+            "description": "flag for identify include deleted data or not",
+            "name": "include_deleted_data",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "description": "default parameter for pagination page",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 10,
+            "description": "default parameter for limit pagination",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "created_at",
+            "description": "default parameter for order pagination",
+            "name": "order_by",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "type": "string",
+            "default": "desc",
+            "description": "default parameter for sort pagination",
+            "name": "sort_by",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get data",
+            "schema": {
+              "$ref": "#/definitions/successFindAllPagination"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
       "post": {
         "security": [],
         "description": "Create new home data",
@@ -248,6 +316,13 @@ func init() {
       },
       "x-go-gen-location": "operations"
     },
+    "customFields": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      },
+      "x-go-package": "time"
+    },
     "error": {
       "type": "object",
       "properties": {
@@ -295,6 +370,23 @@ func init() {
         }
       }
     },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer"
+        },
+        "per_page": {
+          "type": "integer"
+        },
+        "total_page": {
+          "type": "integer"
+        },
+        "total_row": {
+          "type": "integer"
+        }
+      }
+    },
     "modelIdentifier": {
       "type": "object",
       "required": [
@@ -313,21 +405,18 @@ func init() {
         "created_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"column:created_at\"",
           "x-nullable": true,
           "x-omitempty": false
         },
         "deleted_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"deleted_at\"",
           "x-nullable": true,
           "x-omitempty": false
         },
         "updated_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"column:updated_at\"",
           "x-nullable": true,
           "x-omitempty": false
         }
@@ -368,6 +457,42 @@ func init() {
           "format": "uint64"
         }
       },
+      "x-go-gen-location": "models"
+    },
+    "successFindAllPagination": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/successCreateAllOf0"
+        },
+        {
+          "$ref": "#/definitions/successFindAllPaginationAllOf1"
+        }
+      ]
+    },
+    "successFindAllPaginationAllOf1": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/successFindOneAllOf1Data"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/successFindAllPaginationAllOf1Metadata"
+        }
+      },
+      "x-go-gen-location": "models"
+    },
+    "successFindAllPaginationAllOf1Metadata": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/metadata"
+        },
+        {
+          "$ref": "#/definitions/customFields"
+        }
+      ],
       "x-go-gen-location": "models"
     },
     "successFindOne": {
@@ -477,6 +602,74 @@ func init() {
       }
     },
     "/v1/home": {
+      "get": {
+        "security": [],
+        "description": "Find all home data with pagination",
+        "tags": [
+          "home"
+        ],
+        "summary": "Find All Pagination",
+        "operationId": "FindAllPaginationHome",
+        "parameters": [
+          {
+            "enum": [
+              "true",
+              "false"
+            ],
+            "type": "string",
+            "default": "false",
+            "description": "flag for identify include deleted data or not",
+            "name": "include_deleted_data",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "description": "default parameter for pagination page",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "default": 10,
+            "description": "default parameter for limit pagination",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "default": "created_at",
+            "description": "default parameter for order pagination",
+            "name": "order_by",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "type": "string",
+            "default": "desc",
+            "description": "default parameter for sort pagination",
+            "name": "sort_by",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get data",
+            "schema": {
+              "$ref": "#/definitions/successFindAllPagination"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
       "post": {
         "security": [],
         "description": "Create new home data",
@@ -665,6 +858,13 @@ func init() {
       },
       "x-go-gen-location": "operations"
     },
+    "customFields": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      },
+      "x-go-package": "time"
+    },
     "error": {
       "type": "object",
       "properties": {
@@ -712,6 +912,23 @@ func init() {
         }
       }
     },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer"
+        },
+        "per_page": {
+          "type": "integer"
+        },
+        "total_page": {
+          "type": "integer"
+        },
+        "total_row": {
+          "type": "integer"
+        }
+      }
+    },
     "modelIdentifier": {
       "type": "object",
       "required": [
@@ -730,21 +947,18 @@ func init() {
         "created_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"column:created_at\"",
           "x-nullable": true,
           "x-omitempty": false
         },
         "deleted_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"deleted_at\"",
           "x-nullable": true,
           "x-omitempty": false
         },
         "updated_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"column:updated_at\"",
           "x-nullable": true,
           "x-omitempty": false
         }
@@ -785,6 +999,42 @@ func init() {
           "format": "uint64"
         }
       },
+      "x-go-gen-location": "models"
+    },
+    "successFindAllPagination": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/successCreateAllOf0"
+        },
+        {
+          "$ref": "#/definitions/successFindAllPaginationAllOf1"
+        }
+      ]
+    },
+    "successFindAllPaginationAllOf1": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/successFindOneAllOf1Data"
+          }
+        },
+        "metadata": {
+          "$ref": "#/definitions/successFindAllPaginationAllOf1Metadata"
+        }
+      },
+      "x-go-gen-location": "models"
+    },
+    "successFindAllPaginationAllOf1Metadata": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/metadata"
+        },
+        {
+          "$ref": "#/definitions/customFields"
+        }
+      ],
       "x-go-gen-location": "models"
     },
     "successFindOne": {

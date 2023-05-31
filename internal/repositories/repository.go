@@ -22,6 +22,14 @@ type (
 		FindOneHome(ctx context.Context, homeID uint64, includeDeletedData bool) (*models.Home, error)
 		UpdateHome(ctx context.Context, data *models.Home) error
 		SoftDeleteHome(ctx context.Context, data *models.Home) error
+		FindAllPaginationHome(
+			ctx context.Context,
+			limit,
+			offset int64,
+			sortBy,
+			orderBy string,
+			includeDeletedData bool,
+		) ([]models.Home, *int64, error)
 	}
 
 	locationInterface interface {

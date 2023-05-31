@@ -89,5 +89,23 @@ func Route(rt *runtime.Runtime, api *operations.ServerAPI, apiHandler handlers.H
 				Message: "Success delete home",
 			})
 		})
+
+		api.HomeFindAllPaginationHomeHandler = home.FindAllPaginationHomeHandlerFunc(func(faphp home.FindAllPaginationHomeParams) middleware.Responder {
+			data, err := apiHandler.FindAllPaginationHome(context.Background(), &faphp)
+			if err != nil {
+				errRes := rt.GetError(err)
+				return home.NewFindAllPaginationHomeDefault(int(errRes.Code())).WithPayload(&models.Error{
+					Code:    int64(errRes.Code()),
+					Message: errRes.Error(),
+				})
+			}
+
+			return home.NewFindAllPaginationHomeOK().WithPayload(&models.SuccessFindAllPagination{
+				SuccessCreateAllOf0: models.SuccessCreateAllOf0{
+					Message: "Success get home data",
+				},
+				SuccessFindAllPaginationAllOf1: *data,
+			})
+		})
 	}
 }

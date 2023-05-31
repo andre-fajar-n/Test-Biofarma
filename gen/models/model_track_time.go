@@ -21,15 +21,15 @@ type ModelTrackTime struct {
 
 	// created at
 	// Format: date-time
-	CreatedAt *strfmt.DateTime `json:"created_at" gorm:"column:created_at"`
+	CreatedAt *strfmt.DateTime `json:"created_at"`
 
 	// deleted at
 	// Format: date-time
-	DeletedAt *strfmt.DateTime `json:"deleted_at" gorm:"deleted_at"`
+	DeletedAt *strfmt.DateTime `json:"deleted_at"`
 
 	// updated at
 	// Format: date-time
-	UpdatedAt *strfmt.DateTime `json:"updated_at" gorm:"column:updated_at"`
+	UpdatedAt *strfmt.DateTime `json:"updated_at"`
 }
 
 // Validate validates this model track time

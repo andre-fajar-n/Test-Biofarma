@@ -45,6 +45,11 @@ func configureAPI(api *operations.ServerAPI) http.Handler {
 			return middleware.NotImplemented("operation home.DeleteHome has not yet been implemented")
 		})
 	}
+	if api.HomeFindAllPaginationHomeHandler == nil {
+		api.HomeFindAllPaginationHomeHandler = home.FindAllPaginationHomeHandlerFunc(func(params home.FindAllPaginationHomeParams) middleware.Responder {
+			return middleware.NotImplemented("operation home.FindAllPaginationHome has not yet been implemented")
+		})
+	}
 	if api.HomeFindOneHomeHandler == nil {
 		api.HomeFindOneHomeHandler = home.FindOneHomeHandlerFunc(func(params home.FindOneHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.FindOneHome has not yet been implemented")

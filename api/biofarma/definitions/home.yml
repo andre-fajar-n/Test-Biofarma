@@ -39,3 +39,17 @@ definitions:
       properties:
         data:
           $ref: ./../index.yml#/definitions/Home
+
+  SuccessFindAllPagination:
+    allOf:
+    - $ref: './../../common/definitions.yml#/definitions/Success'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./../index.yml#/definitions/Home
+        metadata:
+          allOf:
+          - $ref: ./../../common/definitions.yml#/definitions/Metadata
+          - $ref: ./../../common/definitions.yml#/definitions/CustomFields

@@ -4,6 +4,7 @@ import (
 	"biofarma/gen/models"
 	"biofarma/gen/restapi/operations/home"
 	"context"
+	"math"
 	"strconv"
 	"time"
 
@@ -135,4 +136,41 @@ func (h *handler) DeleteHome(ctx context.Context, form *home.DeleteHomeParams) e
 	}
 
 	return nil
+}
+
+func (h *handler) FindAllPaginationHome(ctx context.Context, form *home.FindAllPaginationHomeParams) (*models.SuccessFindAllPaginationAllOf1, error) {
+	logger := h.runtime.Logger.With().Interface("form", form).Logger()
+
+	includeDeletedData, _ := strconv.ParseBool(*form.IncludeDeletedData)
+	limit := *form.Limit
+	offset := (*form.Page - 1) * *form.Limit
+
+	data, totalData, err := h.repo.FindAllPaginationHome(ctx, limit, offset, *form.SortBy, *form.OrderBy, includeDeletedData)
+	if err != nil {
+		logger.Error().Err(err).Msg("error repo.FindAllPaginationHome")
+		return nil, err
+	}
+
+	totalPage := math.Ceil((float64(*totalData) / float64(*form.Limit)))
+	output := models.SuccessFindAllPaginationAllOf1{
+		Data: make([]*models.SuccessFindOneAllOf1Data, len(data)),
+		Metadata: &models.SuccessFindAllPaginationAllOf1Metadata{
+			Metadata: models.Metadata{
+				Page:      *form.Page,
+				PerPage:   *form.Limit,
+				TotalPage: int64(totalPage),
+				TotalRow:  *totalData,
+			},
+			CustomFields: models.CustomFields{
+				"include_deleted_data": form.IncludeDeletedData,
+			},
+		},
+	}
+
+	for i, v := range data {
+		temp := models.SuccessFindOneAllOf1Data(v)
+		output.Data[i] = &temp
+	}
+
+	return &output, nil
 }

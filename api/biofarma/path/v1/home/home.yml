@@ -16,3 +16,25 @@ post:
       description: Server Error
       schema:
         $ref: './../../../../common/definitions.yml#/definitions/Error'
+get:
+  tags: [home]
+  summary: 'Find All Pagination'
+  description: 'Find all home data with pagination'
+  operationId: FindAllPaginationHome
+  security: []
+  parameters:
+    - $ref: ./../../../../common/parameters.yml#/parameters/IncludeDeletedData
+    - $ref: ./../../../../common/parameters.yml#/parameters/PagePagination
+    - $ref: ./../../../../common/parameters.yml#/parameters/LimitPagination
+    - $ref: ./../../../../common/parameters.yml#/parameters/OrderPagination
+    - $ref: ./../../../../common/parameters.yml#/parameters/SortPagination
+
+  responses:
+    200:
+      description: 'Success get data'
+      schema:
+        $ref: './../../../definitions/home.yml#/definitions/SuccessFindAllPagination'
+    default:
+      description: Server Error
+      schema:
+        $ref: './../../../../common/definitions.yml#/definitions/Error'

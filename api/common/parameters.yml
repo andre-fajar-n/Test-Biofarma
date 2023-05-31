@@ -13,13 +13,13 @@ parameters:
     default: 10
   OrderPagination:
     description: default parameter for order pagination
-    name: order
+    name: order_by
     in: query
     type: string
     default: 'created_at'
   SortPagination:
     description: default parameter for sort pagination
-    name: sort
+    name: sort_by
     in: query
     type: string
     enum: [asc, desc]

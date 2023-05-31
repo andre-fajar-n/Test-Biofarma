@@ -23,6 +23,7 @@ type (
 		UpdateHome(ctx context.Context, form *home.UpdateHomeParams) error
 		FindOneHome(ctx context.Context, form *home.FindOneHomeParams) (*models.SuccessFindOneAllOf1, error)
 		DeleteHome(ctx context.Context, form *home.DeleteHomeParams) error
+		FindAllPaginationHome(ctx context.Context, form *home.FindAllPaginationHomeParams) (*models.SuccessFindAllPaginationAllOf1, error)
 	}
 )
 
