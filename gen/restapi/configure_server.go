@@ -40,6 +40,11 @@ func configureAPI(api *operations.ServerAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	if api.HomeDeleteHomeHandler == nil {
+		api.HomeDeleteHomeHandler = home.DeleteHomeHandlerFunc(func(params home.DeleteHomeParams) middleware.Responder {
+			return middleware.NotImplemented("operation home.DeleteHome has not yet been implemented")
+		})
+	}
 	if api.HomeFindOneHomeHandler == nil {
 		api.HomeFindOneHomeHandler = home.FindOneHomeHandlerFunc(func(params home.FindOneHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.FindOneHome has not yet been implemented")

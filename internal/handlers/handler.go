@@ -22,6 +22,7 @@ type (
 		CreateHome(ctx context.Context, form *home.CreateHomeParams) (*uint64, error)
 		UpdateHome(ctx context.Context, form *home.UpdateHomeParams) error
 		FindOneHome(ctx context.Context, form *home.FindOneHomeParams) (*models.SuccessFindOneAllOf1, error)
+		DeleteHome(ctx context.Context, form *home.DeleteHomeParams) error
 	}
 )
 

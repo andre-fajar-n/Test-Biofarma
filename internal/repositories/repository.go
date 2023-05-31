@@ -21,6 +21,7 @@ type (
 		CreateHome(ctx context.Context, data *models.Home) (*models.Home, error)
 		FindOneHome(ctx context.Context, homeID uint64, includeDeletedData bool) (*models.Home, error)
 		UpdateHome(ctx context.Context, data *models.Home) error
+		SoftDeleteHome(ctx context.Context, data *models.Home) error
 	}
 
 	locationInterface interface {

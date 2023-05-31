@@ -18,7 +18,7 @@ definitions:
         type: string
         format: date-time
         x-omitempty: false
-        x-go-custom-tag: gorm:"column:deleted_at"
+        x-go-custom-tag: gorm:"softDelete"
         x-nullable: true
 
   ModelTrackBy:

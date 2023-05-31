@@ -108,3 +108,31 @@ func (h *handler) FindOneHome(ctx context.Context, form *home.FindOneHomeParams)
 	output := models.SuccessFindOneAllOf1Data(*data)
 	return &models.SuccessFindOneAllOf1{Data: &output}, nil
 }
+
+func (h *handler) DeleteHome(ctx context.Context, form *home.DeleteHomeParams) error {
+	logger := h.runtime.Logger.With().Interface("form", form).Logger()
+
+	existingData, err := h.repo.FindOneHome(ctx, form.HomeID, false)
+	if err != nil {
+		logger.Error().Err(err).Msg("error repo.FindOneHome")
+		return err
+	}
+
+	now := time.Now().UTC()
+	nowStrfmt := strfmt.DateTime(now)
+
+	req := &models.Home{
+		ModelIdentifier: models.ModelIdentifier{ID: existingData.ID},
+		ModelTrackTime: models.ModelTrackTime{
+			DeletedAt: &nowStrfmt,
+		},
+	}
+
+	err = h.repo.SoftDeleteHome(ctx, req)
+	if err != nil {
+		logger.Error().Err(err).Msg("error repo.SoftDeleteHome")
+		return err
+	}
+
+	return nil
+}

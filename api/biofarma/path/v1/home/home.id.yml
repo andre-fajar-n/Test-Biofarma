@@ -37,3 +37,22 @@ get:
       description: Server Error
       schema:
         $ref: './../../../../common/definitions.yml#/definitions/Error'
+
+delete:
+  tags: [home]
+  summary: 'Delete'
+  description: 'Delete home data'
+  operationId: DeleteHome
+  security: []
+  parameters:
+    - $ref: ./../../../parameters/home.yml#/parameters/PathHomeID
+
+  responses:
+    200:
+      description: 'Success delete data'
+      schema:
+        $ref: './../../../../common/definitions.yml#/definitions/Success'
+    default:
+      description: Server Error
+      schema:
+        $ref: './../../../../common/definitions.yml#/definitions/Error'

@@ -177,6 +177,38 @@ func init() {
             }
           }
         }
+      },
+      "delete": {
+        "security": [],
+        "description": "Delete home data",
+        "tags": [
+          "home"
+        ],
+        "summary": "Delete",
+        "operationId": "DeleteHome",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "name": "home_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete data",
+            "schema": {
+              "$ref": "#/definitions/success"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
       }
     }
   },
@@ -288,7 +320,7 @@ func init() {
         "deleted_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"column:deleted_at\"",
+          "x-go-custom-tag": "gorm:\"deleted_at\"",
           "x-nullable": true,
           "x-omitempty": false
         },
@@ -562,6 +594,38 @@ func init() {
             }
           }
         }
+      },
+      "delete": {
+        "security": [],
+        "description": "Delete home data",
+        "tags": [
+          "home"
+        ],
+        "summary": "Delete",
+        "operationId": "DeleteHome",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "name": "home_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete data",
+            "schema": {
+              "$ref": "#/definitions/success"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
       }
     }
   },
@@ -673,7 +737,7 @@ func init() {
         "deleted_at": {
           "type": "string",
           "format": "date-time",
-          "x-go-custom-tag": "gorm:\"column:deleted_at\"",
+          "x-go-custom-tag": "gorm:\"deleted_at\"",
           "x-nullable": true,
           "x-omitempty": false
         },

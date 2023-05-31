@@ -74,5 +74,20 @@ func Route(rt *runtime.Runtime, api *operations.ServerAPI, apiHandler handlers.H
 				SuccessFindOneAllOf1: *data,
 			})
 		})
+
+		api.HomeDeleteHomeHandler = home.DeleteHomeHandlerFunc(func(dhp home.DeleteHomeParams) middleware.Responder {
+			err := apiHandler.DeleteHome(context.Background(), &dhp)
+			if err != nil {
+				errRes := rt.GetError(err)
+				return home.NewDeleteHomeDefault(int(errRes.Code())).WithPayload(&models.Error{
+					Code:    int64(errRes.Code()),
+					Message: errRes.Error(),
+				})
+			}
+
+			return home.NewDeleteHomeOK().WithPayload(&models.Success{
+				Message: "Success delete home",
+			})
+		})
 	}
 }

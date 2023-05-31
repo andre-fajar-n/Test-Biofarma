@@ -25,7 +25,7 @@ type ModelTrackTime struct {
 
 	// deleted at
 	// Format: date-time
-	DeletedAt *strfmt.DateTime `json:"deleted_at" gorm:"column:deleted_at"`
+	DeletedAt *strfmt.DateTime `json:"deleted_at" gorm:"deleted_at"`
 
 	// updated at
 	// Format: date-time
