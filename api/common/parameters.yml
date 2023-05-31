@@ -24,3 +24,10 @@ parameters:
     type: string
     enum: [asc, desc]
     default: 'desc'
+  IncludeDeletedData:
+    description: flag for identify include deleted data or not
+    name: include_deleted_data
+    in: query
+    type: string
+    enum: ['true', 'false']
+    default: 'false'

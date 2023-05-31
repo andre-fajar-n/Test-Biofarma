@@ -15,4 +15,4 @@ post:
     default:
       description: Server Error
       schema:
-        $ref: './../../../../common/definitions/common.yml#/definitions/Error'
+        $ref: './../../../../common/definitions.yml#/definitions/Error'

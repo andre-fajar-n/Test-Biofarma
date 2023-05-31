@@ -26,6 +26,6 @@ paths:
 definitions:
   Home:
     allOf:
-      - $ref: "./../common/definitions/common.yml#/definitions/ModelIdentifier"
-      - $ref: "./../common/definitions/common.yml#/definitions/ModelTrackTime"
+      - $ref: "./../common/definitions.yml#/definitions/ModelIdentifier"
       - $ref: "./definitions/home.yml#/definitions/HomeData"
+      - $ref: "./../common/definitions.yml#/definitions/ModelTrackTime"

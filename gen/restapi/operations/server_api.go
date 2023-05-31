@@ -46,6 +46,9 @@ func NewServerAPI(spec *loads.Document) *ServerAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		HomeFindOneHomeHandler: home.FindOneHomeHandlerFunc(func(params home.FindOneHomeParams) middleware.Responder {
+			return middleware.NotImplemented("operation home.FindOneHome has not yet been implemented")
+		}),
 		HomeUpdateHomeHandler: home.UpdateHomeHandlerFunc(func(params home.UpdateHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.UpdateHome has not yet been implemented")
 		}),
@@ -94,6 +97,8 @@ type ServerAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// HomeFindOneHomeHandler sets the operation handler for the find one home operation
+	HomeFindOneHomeHandler home.FindOneHomeHandler
 	// HomeUpdateHomeHandler sets the operation handler for the update home operation
 	HomeUpdateHomeHandler home.UpdateHomeHandler
 	// HomeCreateHomeHandler sets the operation handler for the create home operation
@@ -180,6 +185,9 @@ func (o *ServerAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.HomeFindOneHomeHandler == nil {
+		unregistered = append(unregistered, "home.FindOneHomeHandler")
+	}
 	if o.HomeUpdateHomeHandler == nil {
 		unregistered = append(unregistered, "home.UpdateHomeHandler")
 	}
@@ -279,6 +287,10 @@ func (o *ServerAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/v1/home/{home_id}"] = home.NewFindOneHome(o.context, o.HomeFindOneHomeHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

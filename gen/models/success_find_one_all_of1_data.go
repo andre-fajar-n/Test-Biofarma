@@ -13,10 +13,10 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// Home home
+// SuccessFindOneAllOf1Data success find one all of1 data
 //
-// swagger:model Home
-type Home struct {
+// swagger:model successFindOneAllOf1Data
+type SuccessFindOneAllOf1Data struct {
 	ModelIdentifier
 
 	HomeData
@@ -25,7 +25,7 @@ type Home struct {
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
-func (m *Home) UnmarshalJSON(raw []byte) error {
+func (m *SuccessFindOneAllOf1Data) UnmarshalJSON(raw []byte) error {
 	// AO0
 	var aO0 ModelIdentifier
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
@@ -51,7 +51,7 @@ func (m *Home) UnmarshalJSON(raw []byte) error {
 }
 
 // MarshalJSON marshals this object to a JSON structure
-func (m Home) MarshalJSON() ([]byte, error) {
+func (m SuccessFindOneAllOf1Data) MarshalJSON() ([]byte, error) {
 	_parts := make([][]byte, 0, 3)
 
 	aO0, err := swag.WriteJSON(m.ModelIdentifier)
@@ -74,8 +74,8 @@ func (m Home) MarshalJSON() ([]byte, error) {
 	return swag.ConcatJSON(_parts...), nil
 }
 
-// Validate validates this home
-func (m *Home) Validate(formats strfmt.Registry) error {
+// Validate validates this success find one all of1 data
+func (m *SuccessFindOneAllOf1Data) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	// validation for a type composition with ModelIdentifier
@@ -97,8 +97,8 @@ func (m *Home) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validate this home based on the context it is used
-func (m *Home) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validate this success find one all of1 data based on the context it is used
+func (m *SuccessFindOneAllOf1Data) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	// validation for a type composition with ModelIdentifier
@@ -121,7 +121,7 @@ func (m *Home) ContextValidate(ctx context.Context, formats strfmt.Registry) err
 }
 
 // MarshalBinary interface implementation
-func (m *Home) MarshalBinary() ([]byte, error) {
+func (m *SuccessFindOneAllOf1Data) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -129,8 +129,8 @@ func (m *Home) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *Home) UnmarshalBinary(b []byte) error {
-	var res Home
+func (m *SuccessFindOneAllOf1Data) UnmarshalBinary(b []byte) error {
+	var res SuccessFindOneAllOf1Data
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

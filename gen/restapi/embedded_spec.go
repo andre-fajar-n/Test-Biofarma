@@ -95,6 +95,49 @@ func init() {
       }
     },
     "/v1/home/{home_id}": {
+      "get": {
+        "security": [],
+        "description": "Find one home data",
+        "tags": [
+          "home"
+        ],
+        "summary": "Find One",
+        "operationId": "FindOneHome",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "name": "home_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "enum": [
+              "true",
+              "false"
+            ],
+            "type": "string",
+            "default": "false",
+            "description": "flag for identify include deleted data or not",
+            "name": "include_deleted_data",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get data",
+            "schema": {
+              "$ref": "#/definitions/successFindOne"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
       "put": {
         "security": [],
         "description": "Update home data",
@@ -144,10 +187,10 @@ func init() {
           "$ref": "#/definitions/modelIdentifier"
         },
         {
-          "$ref": "#/definitions/modelTrackTime"
+          "$ref": "#/definitions/homeData"
         },
         {
-          "$ref": "#/definitions/homeData"
+          "$ref": "#/definitions/modelTrackTime"
         }
       ]
     },
@@ -293,6 +336,39 @@ func init() {
           "format": "uint64"
         }
       },
+      "x-go-gen-location": "models"
+    },
+    "successFindOne": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/successCreateAllOf0"
+        },
+        {
+          "$ref": "#/definitions/successFindOneAllOf1"
+        }
+      ]
+    },
+    "successFindOneAllOf1": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/successFindOneAllOf1Data"
+        }
+      },
+      "x-go-gen-location": "models"
+    },
+    "successFindOneAllOf1Data": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/modelIdentifier"
+        },
+        {
+          "$ref": "#/definitions/homeData"
+        },
+        {
+          "$ref": "#/definitions/modelTrackTime"
+        }
+      ],
       "x-go-gen-location": "models"
     },
     "updateHomeParamsBody": {
@@ -404,6 +480,49 @@ func init() {
       }
     },
     "/v1/home/{home_id}": {
+      "get": {
+        "security": [],
+        "description": "Find one home data",
+        "tags": [
+          "home"
+        ],
+        "summary": "Find One",
+        "operationId": "FindOneHome",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "uint64",
+            "name": "home_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "enum": [
+              "true",
+              "false"
+            ],
+            "type": "string",
+            "default": "false",
+            "description": "flag for identify include deleted data or not",
+            "name": "include_deleted_data",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get data",
+            "schema": {
+              "$ref": "#/definitions/successFindOne"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
       "put": {
         "security": [],
         "description": "Update home data",
@@ -453,10 +572,10 @@ func init() {
           "$ref": "#/definitions/modelIdentifier"
         },
         {
-          "$ref": "#/definitions/modelTrackTime"
+          "$ref": "#/definitions/homeData"
         },
         {
-          "$ref": "#/definitions/homeData"
+          "$ref": "#/definitions/modelTrackTime"
         }
       ]
     },
@@ -602,6 +721,39 @@ func init() {
           "format": "uint64"
         }
       },
+      "x-go-gen-location": "models"
+    },
+    "successFindOne": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/successCreateAllOf0"
+        },
+        {
+          "$ref": "#/definitions/successFindOneAllOf1"
+        }
+      ]
+    },
+    "successFindOneAllOf1": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/successFindOneAllOf1Data"
+        }
+      },
+      "x-go-gen-location": "models"
+    },
+    "successFindOneAllOf1Data": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/modelIdentifier"
+        },
+        {
+          "$ref": "#/definitions/homeData"
+        },
+        {
+          "$ref": "#/definitions/modelTrackTime"
+        }
+      ],
       "x-go-gen-location": "models"
     },
     "updateHomeParamsBody": {

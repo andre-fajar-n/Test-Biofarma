@@ -94,3 +94,17 @@ func (h *handler) UpdateHome(ctx context.Context, form *home.UpdateHomeParams) e
 
 	return nil
 }
+
+func (h *handler) FindOneHome(ctx context.Context, form *home.FindOneHomeParams) (*models.SuccessFindOneAllOf1, error) {
+	logger := h.runtime.Logger.With().Interface("form", form).Logger()
+
+	includeDeletedData, _ := strconv.ParseBool(*form.IncludeDeletedData)
+	data, err := h.repo.FindOneHome(ctx, form.HomeID, includeDeletedData)
+	if err != nil {
+		logger.Error().Err(err).Msg("error repo.FindOneHome")
+		return nil, err
+	}
+
+	output := models.SuccessFindOneAllOf1Data(*data)
+	return &models.SuccessFindOneAllOf1{Data: &output}, nil
+}

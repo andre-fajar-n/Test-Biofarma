@@ -56,5 +56,23 @@ func Route(rt *runtime.Runtime, api *operations.ServerAPI, apiHandler handlers.H
 				Message: "Success update home",
 			})
 		})
+
+		api.HomeFindOneHomeHandler = home.FindOneHomeHandlerFunc(func(fohp home.FindOneHomeParams) middleware.Responder {
+			data, err := apiHandler.FindOneHome(context.Background(), &fohp)
+			if err != nil {
+				errRes := rt.GetError(err)
+				return home.NewFindOneHomeDefault(int(errRes.Code())).WithPayload(&models.Error{
+					Code:    int64(errRes.Code()),
+					Message: errRes.Error(),
+				})
+			}
+
+			return home.NewFindOneHomeOK().WithPayload(&models.SuccessFindOne{
+				SuccessCreateAllOf0: models.SuccessCreateAllOf0{
+					Message: "Success get home data",
+				},
+				SuccessFindOneAllOf1: *data,
+			})
+		})
 	}
 }

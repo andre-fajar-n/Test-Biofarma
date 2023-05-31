@@ -25,9 +25,17 @@ definitions:
 
   SuccessCreate:
     allOf:
-    - $ref: './../../common/definitions/common.yml#/definitions/Success'
+    - $ref: './../../common/definitions.yml#/definitions/Success'
     - type: object
       properties:
         home_id:
           type: number
           format: uint64
+
+  SuccessFindOne:
+    allOf:
+    - $ref: './../../common/definitions.yml#/definitions/Success'
+    - type: object
+      properties:
+        data:
+          $ref: ./../index.yml#/definitions/Home

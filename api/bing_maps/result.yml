@@ -13,10 +13,16 @@ basePath: /REST
 paths:
     /v1/Locations:
         get:
+            security: []
+            description: Find location
+            tags:
+                - location
+            summary: Find Location
+            operationId: findLocation
             parameters:
-                - in: query
-                  type: string
+                - type: string
                   name: key
+                  in: query
                 - type: string
                   name: query
                   in: query
@@ -29,23 +35,16 @@ paths:
                     description: Server Error
                     schema:
                         $ref: '#/definitions/error'
-            security: []
-            description: Find location
-            tags:
-                - location
-            summary: Find Location
-            operationId: findLocation
 definitions:
     error:
-        type: object
         properties:
-            code:
-                type: integer
             message:
                 type: string
                 example: error
-    successGetLocation:
+            code:
+                type: integer
         type: object
+    successGetLocation:
         properties:
             authenticationResultCode:
                 type: string
@@ -53,12 +52,13 @@ definitions:
                 type: array
                 items:
                     $ref: '#/definitions/successGetLocationResourceSetsItems'
+        type: object
     successGetLocationResourceSetsItems:
         type: object
         properties:
             estimatedTotal:
-                type: number
                 format: int64
+                type: number
             resources:
                 type: array
                 items:
@@ -93,7 +93,6 @@ definitions:
                 type: string
         x-go-gen-location: models
     successGetLocationResourceSetsItemsResourcesItemsPoint:
-        type: object
         properties:
             coordinates:
                 type: array
@@ -101,3 +100,4 @@ definitions:
                     type: number
                     format: float64
         x-go-gen-location: models
+        type: object

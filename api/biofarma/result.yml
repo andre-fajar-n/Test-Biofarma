@@ -7,11 +7,14 @@ schemes:
     - http
 swagger: "2.0"
 info:
-    version: 1.0.0
     title: Test Biofarma
+    version: 1.0.0
 paths:
     /health:
         get:
+            tags:
+                - health
+            summary: Health Check
             operationId: health
             responses:
                 "200":
@@ -24,9 +27,6 @@ paths:
                         $ref: '#/definitions/error'
             security: []
             description: Check if the App is Running
-            tags:
-                - health
-            summary: Health Check
     /v1/home:
         post:
             description: Create new home data
@@ -35,31 +35,65 @@ paths:
             summary: Create
             operationId: createHome
             parameters:
-                - name: data
-                  in: body
-                  required: true
+                - required: true
                   schema:
                     $ref: '#/definitions/createHomeParamsBody'
+                  name: data
+                  in: body
             responses:
                 "201":
                     description: Success create
                     schema:
                         $ref: '#/definitions/successCreate'
                 default:
+                    description: Server Error
                     schema:
                         $ref: '#/definitions/error'
-                    description: Server Error
             security: []
     /v1/home/{home_id}:
-        put:
-            summary: Update
-            operationId: UpdateHome
+        get:
+            responses:
+                "200":
+                    description: Success get data
+                    schema:
+                        $ref: '#/definitions/successFindOne'
+                default:
+                    description: Server Error
+                    schema:
+                        $ref: '#/definitions/error'
+            security: []
+            description: Find one home data
+            tags:
+                - home
+            summary: Find One
+            operationId: FindOneHome
             parameters:
-                - format: uint64
-                  name: home_id
+                - name: home_id
                   in: path
                   required: true
                   type: integer
+                  format: uint64
+                - enum:
+                    - "true"
+                    - "false"
+                  type: string
+                  default: "false"
+                  description: flag for identify include deleted data or not
+                  name: include_deleted_data
+                  in: query
+        put:
+            security: []
+            description: Update home data
+            tags:
+                - home
+            summary: Update
+            operationId: UpdateHome
+            parameters:
+                - type: integer
+                  format: uint64
+                  name: home_id
+                  in: path
+                  required: true
                 - name: data
                   in: body
                   required: true
@@ -71,76 +105,36 @@ paths:
                     schema:
                         $ref: '#/definitions/success'
                 default:
-                    description: Server Error
                     schema:
                         $ref: '#/definitions/error'
-            security: []
-            description: Update home data
-            tags:
-                - home
+                    description: Server Error
 definitions:
     Home:
         allOf:
             - $ref: '#/definitions/modelIdentifier'
-            - $ref: '#/definitions/modelTrackTime'
             - $ref: '#/definitions/homeData'
-    createHomeParamsBody:
-        type: object
-        required:
-            - type
-            - address
-        properties:
-            address:
-                type: string
-            type:
-                format: int
-                enum:
-                    - !!float 36
-                    - !!float 45
-                    - !!float 72
-                type: number
-        x-go-gen-location: operations
+            - $ref: '#/definitions/modelTrackTime'
     error:
+        type: object
         properties:
             code:
                 type: integer
             message:
                 type: string
                 example: error
-        type: object
-    homeData:
+    success:
         type: object
         properties:
-            postal_code:
-                type: string
-            subdistrict:
-                type: string
-            type:
-                type: string
-            address_line:
-                type: string
-            formatted_address:
-                type: string
-            latitude:
-                type: number
-            longitude:
-                type: number
-            regency:
-                type: string
-            address:
-                type: string
-            country:
+            message:
                 type: string
     successCreate:
         allOf:
             - $ref: '#/definitions/successCreateAllOf0'
             - $ref: '#/definitions/successCreateAllOf1'
-    successCreateAllOf0:
-        type: object
-        properties:
-            message:
-                type: string
-        x-go-gen-location: models
+    successFindOne:
+        allOf:
+            - $ref: '#/definitions/successCreateAllOf0'
+            - $ref: '#/definitions/successFindOneAllOf1'
     updateHomeParamsBody:
         type: object
         required:
@@ -148,15 +142,72 @@ definitions:
             - address
         properties:
             type:
+                type: number
                 format: int
                 enum:
                     - !!float 36
                     - !!float 45
                     - !!float 72
-                type: number
             address:
                 type: string
         x-go-gen-location: operations
+    successFindOneAllOf1:
+        type: object
+        properties:
+            data:
+                $ref: '#/definitions/successFindOneAllOf1Data'
+        x-go-gen-location: models
+    successFindOneAllOf1Data:
+        allOf:
+            - $ref: '#/definitions/modelIdentifier'
+            - $ref: '#/definitions/homeData'
+            - $ref: '#/definitions/modelTrackTime'
+        x-go-gen-location: models
+    createHomeParamsBody:
+        type: object
+        required:
+            - type
+            - address
+        properties:
+            type:
+                type: number
+                format: int
+                enum:
+                    - !!float 36
+                    - !!float 45
+                    - !!float 72
+            address:
+                type: string
+        x-go-gen-location: operations
+    successCreateAllOf0:
+        type: object
+        properties:
+            message:
+                type: string
+        x-go-gen-location: models
+    homeData:
+        type: object
+        properties:
+            address:
+                type: string
+            address_line:
+                type: string
+            country:
+                type: string
+            formatted_address:
+                type: string
+            latitude:
+                type: number
+            longitude:
+                type: number
+            postal_code:
+                type: string
+            regency:
+                type: string
+            subdistrict:
+                type: string
+            type:
+                type: string
     modelIdentifier:
         type: object
         required:
@@ -166,6 +217,7 @@ definitions:
                 type: integer
                 format: uint64
     modelTrackTime:
+        type: object
         properties:
             created_at:
                 type: string
@@ -180,24 +232,18 @@ definitions:
                 x-nullable: true
                 x-omitempty: false
             updated_at:
-                type: string
                 format: date-time
                 x-go-custom-tag: gorm:"column:updated_at"
                 x-nullable: true
                 x-omitempty: false
-        type: object
-    success:
-        type: object
-        properties:
-            message:
                 type: string
     successCreateAllOf1:
-        type: object
         properties:
             home_id:
                 type: number
                 format: uint64
         x-go-gen-location: models
+        type: object
 securityDefinitions:
     authorization:
         type: apiKey
