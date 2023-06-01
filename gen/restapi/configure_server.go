@@ -13,6 +13,7 @@ import (
 	"biofarma/gen/restapi/operations"
 	"biofarma/gen/restapi/operations/health"
 	"biofarma/gen/restapi/operations/home"
+	"biofarma/gen/restapi/operations/route"
 )
 
 //go:generate swagger generate server --target ../../gen --name Server --spec ../../api/biofarma/result.yml --principal models.Principal --exclude-main
@@ -53,6 +54,11 @@ func configureAPI(api *operations.ServerAPI) http.Handler {
 	if api.HomeFindOneHomeHandler == nil {
 		api.HomeFindOneHomeHandler = home.FindOneHomeHandlerFunc(func(params home.FindOneHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.FindOneHome has not yet been implemented")
+		})
+	}
+	if api.RouteFindRouteHandler == nil {
+		api.RouteFindRouteHandler = route.FindRouteHandlerFunc(func(params route.FindRouteParams) middleware.Responder {
+			return middleware.NotImplemented("operation route.FindRoute has not yet been implemented")
 		})
 	}
 	if api.HomeUpdateHomeHandler == nil {

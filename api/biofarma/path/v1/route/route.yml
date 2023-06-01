@@ -1,0 +1,26 @@
+get:
+  tags: [route]
+  summary: 'Find Route'
+  description: 'Find route between 2 homes or more'
+  operationId: FindRoute
+  security: []
+  parameters:
+    - name: home_ids
+      required: true
+      in: query
+      minItems: 2
+      uniqueItems: true
+      type: array
+      items:
+        type: number
+        format: uint64
+
+  responses:
+    200:
+      description: 'Success get data'
+      schema:
+        $ref: './../../../definitions/route.yml#/definitions/SuccessFindRoute'
+    default:
+      description: Server Error
+      schema:
+        $ref: './../../../../common/definitions.yml#/definitions/Error'

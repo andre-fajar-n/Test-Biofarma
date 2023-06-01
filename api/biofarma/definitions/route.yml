@@ -1,0 +1,20 @@
+definitions:
+  SuccessFindRoute:
+    allOf:
+    - $ref: './../../common/definitions.yml#/definitions/Success'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              origin:
+                $ref: ./home.yml#/definitions/HomeWithoutTrackTime
+              destination:
+                $ref: ./home.yml#/definitions/HomeWithoutTrackTime
+              distance:
+                type: number
+                format: float64
+                description: distance in meters
+                x-omitempty: false

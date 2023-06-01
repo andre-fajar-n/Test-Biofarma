@@ -23,6 +23,10 @@ paths:
   /v1/home/{home_id}:
     $ref: ./path/v1/home/home.id.yml
 
+  # route
+  /v1/route:
+    $ref: ./path/v1/route/route.yml
+
 definitions:
   Home:
     allOf:

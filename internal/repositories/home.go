@@ -115,3 +115,47 @@ func (r *repository) FindAllPaginationHome(
 
 	return output, &count, nil
 }
+
+func (r *repository) CountByIDsHome(ctx context.Context, homeIDs []uint64, includeDeletedData bool) (*int64, error) {
+	logger := r.rt.Logger.With().
+		Uints64("homeIDs", homeIDs).
+		Bool("includeDeletedData", includeDeletedData).
+		Logger()
+
+	var output int64
+	db := r.rt.Db.Model(&models.Home{}).Where("id IN (?)", homeIDs)
+
+	if !includeDeletedData {
+		db = db.Where("deleted_at IS NULL")
+	}
+
+	err := db.Count(&output).Error
+	if err != nil {
+		logger.Error().Err(err).Msg("error query")
+		return nil, err
+	}
+
+	return &output, nil
+}
+
+func (r *repository) FindByIDsHome(ctx context.Context, homeIDs []uint64, includeDeletedData bool) ([]models.Home, error) {
+	logger := r.rt.Logger.With().
+		Uints64("homeIDs", homeIDs).
+		Bool("includeDeletedData", includeDeletedData).
+		Logger()
+
+	var output []models.Home
+	db := r.rt.Db.Where("id IN (?)", homeIDs)
+
+	if !includeDeletedData {
+		db = db.Where("deleted_at IS NULL")
+	}
+
+	err := db.Order(fmt.Sprintf("array_position(array[%s]::integer[], id)", utils.Uint64sToString(homeIDs, ","))).Find(&output).Error
+	if err != nil {
+		logger.Error().Err(err).Msg("error query")
+		return nil, err
+	}
+
+	return output, nil
+}

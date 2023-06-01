@@ -53,3 +53,8 @@ definitions:
           allOf:
           - $ref: ./../../common/definitions.yml#/definitions/Metadata
           - $ref: ./../../common/definitions.yml#/definitions/CustomFields
+
+  HomeWithoutTrackTime:
+    allOf:
+    - $ref: ./../../common/definitions.yml#/definitions/ModelIdentifier
+    - $ref: '#/definitions/HomeData'

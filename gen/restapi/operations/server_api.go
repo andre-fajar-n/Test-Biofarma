@@ -21,6 +21,7 @@ import (
 
 	"biofarma/gen/restapi/operations/health"
 	"biofarma/gen/restapi/operations/home"
+	"biofarma/gen/restapi/operations/route"
 )
 
 // NewServerAPI creates a new Server instance
@@ -54,6 +55,9 @@ func NewServerAPI(spec *loads.Document) *ServerAPI {
 		}),
 		HomeFindOneHomeHandler: home.FindOneHomeHandlerFunc(func(params home.FindOneHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.FindOneHome has not yet been implemented")
+		}),
+		RouteFindRouteHandler: route.FindRouteHandlerFunc(func(params route.FindRouteParams) middleware.Responder {
+			return middleware.NotImplemented("operation route.FindRoute has not yet been implemented")
 		}),
 		HomeUpdateHomeHandler: home.UpdateHomeHandlerFunc(func(params home.UpdateHomeParams) middleware.Responder {
 			return middleware.NotImplemented("operation home.UpdateHome has not yet been implemented")
@@ -109,6 +113,8 @@ type ServerAPI struct {
 	HomeFindAllPaginationHomeHandler home.FindAllPaginationHomeHandler
 	// HomeFindOneHomeHandler sets the operation handler for the find one home operation
 	HomeFindOneHomeHandler home.FindOneHomeHandler
+	// RouteFindRouteHandler sets the operation handler for the find route operation
+	RouteFindRouteHandler route.FindRouteHandler
 	// HomeUpdateHomeHandler sets the operation handler for the update home operation
 	HomeUpdateHomeHandler home.UpdateHomeHandler
 	// HomeCreateHomeHandler sets the operation handler for the create home operation
@@ -203,6 +209,9 @@ func (o *ServerAPI) Validate() error {
 	}
 	if o.HomeFindOneHomeHandler == nil {
 		unregistered = append(unregistered, "home.FindOneHomeHandler")
+	}
+	if o.RouteFindRouteHandler == nil {
+		unregistered = append(unregistered, "route.FindRouteHandler")
 	}
 	if o.HomeUpdateHomeHandler == nil {
 		unregistered = append(unregistered, "home.UpdateHomeHandler")
@@ -315,6 +324,10 @@ func (o *ServerAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/v1/home/{home_id}"] = home.NewFindOneHome(o.context, o.HomeFindOneHomeHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/v1/route"] = route.NewFindRoute(o.context, o.RouteFindRouteHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

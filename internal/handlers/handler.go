@@ -3,6 +3,7 @@ package handlers
 import (
 	"biofarma/gen/models"
 	"biofarma/gen/restapi/operations/home"
+	"biofarma/gen/restapi/operations/route"
 	"biofarma/internal/repositories"
 	"biofarma/runtime"
 	"context"
@@ -16,6 +17,7 @@ type (
 
 	HandlerInterface interface {
 		homeInterface
+		routeInterface
 	}
 
 	homeInterface interface {
@@ -24,6 +26,10 @@ type (
 		FindOneHome(ctx context.Context, form *home.FindOneHomeParams) (*models.SuccessFindOneAllOf1, error)
 		DeleteHome(ctx context.Context, form *home.DeleteHomeParams) error
 		FindAllPaginationHome(ctx context.Context, form *home.FindAllPaginationHomeParams) (*models.SuccessFindAllPaginationAllOf1, error)
+	}
+
+	routeInterface interface {
+		FindRoute(ctx context.Context, form *route.FindRouteParams) (*models.SuccessFindRouteAllOf1, error)
 	}
 )
 

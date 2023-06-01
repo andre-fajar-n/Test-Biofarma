@@ -5,6 +5,7 @@ import (
 	"biofarma/gen/restapi/operations"
 	"biofarma/gen/restapi/operations/health"
 	"biofarma/gen/restapi/operations/home"
+	"biofarma/gen/restapi/operations/route"
 	"biofarma/internal/handlers"
 	"biofarma/runtime"
 	"context"
@@ -105,6 +106,27 @@ func Route(rt *runtime.Runtime, api *operations.ServerAPI, apiHandler handlers.H
 					Message: "Success get home data",
 				},
 				SuccessFindAllPaginationAllOf1: *data,
+			})
+		})
+	}
+
+	// route
+	{
+		api.RouteFindRouteHandler = route.FindRouteHandlerFunc(func(frp route.FindRouteParams) middleware.Responder {
+			data, err := apiHandler.FindRoute(context.Background(), &frp)
+			if err != nil {
+				errRes := rt.GetError(err)
+				return route.NewFindRouteDefault(int(errRes.Code())).WithPayload(&models.Error{
+					Code:    int64(errRes.Code()),
+					Message: errRes.Error(),
+				})
+			}
+
+			return route.NewFindRouteOK().WithPayload(&models.SuccessFindRoute{
+				SuccessCreateAllOf0: models.SuccessCreateAllOf0{
+					Message: "Success get home data",
+				},
+				SuccessFindRouteAllOf1: *data,
 			})
 		})
 	}

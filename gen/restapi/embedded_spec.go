@@ -278,6 +278,45 @@ func init() {
           }
         }
       }
+    },
+    "/v1/route": {
+      "get": {
+        "security": [],
+        "description": "Find route between 2 homes or more",
+        "tags": [
+          "route"
+        ],
+        "summary": "Find Route",
+        "operationId": "FindRoute",
+        "parameters": [
+          {
+            "minItems": 2,
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "uint64"
+            },
+            "name": "home_ids",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get data",
+            "schema": {
+              "$ref": "#/definitions/successFindRoute"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -369,6 +408,16 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "homeWithoutTrackTime": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/modelIdentifier"
+        },
+        {
+          "$ref": "#/definitions/homeData"
+        }
+      ]
     },
     "metadata": {
       "type": "object",
@@ -526,6 +575,46 @@ func init() {
           "$ref": "#/definitions/modelTrackTime"
         }
       ],
+      "x-go-gen-location": "models"
+    },
+    "successFindRoute": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/successCreateAllOf0"
+        },
+        {
+          "$ref": "#/definitions/successFindRouteAllOf1"
+        }
+      ]
+    },
+    "successFindRouteAllOf1": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/successFindRouteAllOf1DataItems"
+          }
+        }
+      },
+      "x-go-gen-location": "models"
+    },
+    "successFindRouteAllOf1DataItems": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "$ref": "#/definitions/homeWithoutTrackTime"
+        },
+        "distance": {
+          "description": "distance in meters",
+          "type": "number",
+          "format": "float64",
+          "x-omitempty": false
+        },
+        "origin": {
+          "$ref": "#/definitions/homeWithoutTrackTime"
+        }
+      },
       "x-go-gen-location": "models"
     },
     "updateHomeParamsBody": {
@@ -820,6 +909,45 @@ func init() {
           }
         }
       }
+    },
+    "/v1/route": {
+      "get": {
+        "security": [],
+        "description": "Find route between 2 homes or more",
+        "tags": [
+          "route"
+        ],
+        "summary": "Find Route",
+        "operationId": "FindRoute",
+        "parameters": [
+          {
+            "minItems": 2,
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "uint64"
+            },
+            "name": "home_ids",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get data",
+            "schema": {
+              "$ref": "#/definitions/successFindRoute"
+            }
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -911,6 +1039,16 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "homeWithoutTrackTime": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/modelIdentifier"
+        },
+        {
+          "$ref": "#/definitions/homeData"
+        }
+      ]
     },
     "metadata": {
       "type": "object",
@@ -1068,6 +1206,46 @@ func init() {
           "$ref": "#/definitions/modelTrackTime"
         }
       ],
+      "x-go-gen-location": "models"
+    },
+    "successFindRoute": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/successCreateAllOf0"
+        },
+        {
+          "$ref": "#/definitions/successFindRouteAllOf1"
+        }
+      ]
+    },
+    "successFindRouteAllOf1": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/successFindRouteAllOf1DataItems"
+          }
+        }
+      },
+      "x-go-gen-location": "models"
+    },
+    "successFindRouteAllOf1DataItems": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "$ref": "#/definitions/homeWithoutTrackTime"
+        },
+        "distance": {
+          "description": "distance in meters",
+          "type": "number",
+          "format": "float64",
+          "x-omitempty": false
+        },
+        "origin": {
+          "$ref": "#/definitions/homeWithoutTrackTime"
+        }
+      },
       "x-go-gen-location": "models"
     },
     "updateHomeParamsBody": {

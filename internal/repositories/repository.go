@@ -30,6 +30,8 @@ type (
 			orderBy string,
 			includeDeletedData bool,
 		) ([]models.Home, *int64, error)
+		CountByIDsHome(ctx context.Context, homeIDs []uint64, includeDeletedData bool) (*int64, error)
+		FindByIDsHome(ctx context.Context, homeIDs []uint64, includeDeletedData bool) ([]models.Home, error)
 	}
 
 	locationInterface interface {

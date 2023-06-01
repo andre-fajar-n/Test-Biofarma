@@ -13,13 +13,6 @@ basePath: /REST
 paths:
     /v1/Locations:
         get:
-            parameters:
-                - name: key
-                  in: query
-                  type: string
-                - type: string
-                  name: query
-                  in: query
             responses:
                 "200":
                     description: Success get data
@@ -35,19 +28,16 @@ paths:
                 - location
             summary: Find Location
             operationId: findLocation
+            parameters:
+                - type: string
+                  name: key
+                  in: query
+                - in: query
+                  type: string
+                  name: query
 definitions:
-    successGetLocationResourceSetsItems:
-        type: object
-        properties:
-            estimatedTotal:
-                type: number
-                format: int64
-            resources:
-                type: array
-                items:
-                    $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItems'
-        x-go-gen-location: models
     successGetLocationResourceSetsItemsResourcesItems:
+        type: object
         properties:
             address:
                 $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsAddress'
@@ -56,10 +46,14 @@ definitions:
             point:
                 $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsPoint'
         x-go-gen-location: models
-        type: object
     successGetLocationResourceSetsItemsResourcesItemsAddress:
-        type: object
         properties:
+            adminDistrict:
+                type: string
+            adminDistrict2:
+                type: string
+            countryRegion:
+                type: string
             formattedAddress:
                 type: string
             locality:
@@ -68,13 +62,8 @@ definitions:
                 type: string
             addressLine:
                 type: string
-            adminDistrict:
-                type: string
-            adminDistrict2:
-                type: string
-            countryRegion:
-                type: string
         x-go-gen-location: models
+        type: object
     successGetLocationResourceSetsItemsResourcesItemsPoint:
         type: object
         properties:
@@ -101,3 +90,14 @@ definitions:
                 type: array
                 items:
                     $ref: '#/definitions/successGetLocationResourceSetsItems'
+    successGetLocationResourceSetsItems:
+        type: object
+        properties:
+            estimatedTotal:
+                type: number
+                format: int64
+            resources:
+                type: array
+                items:
+                    $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItems'
+        x-go-gen-location: models
