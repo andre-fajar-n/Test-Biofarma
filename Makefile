@@ -12,7 +12,7 @@ spec:
 build: 
 	CGO_ENABLED=0 GOOS=linux go build -v -installsuffix cgo ./cmd/cli
 	
-run:
+run-binary:
 	./cli api --port=8080 --host=0.0.0.0
 
 run-local:
