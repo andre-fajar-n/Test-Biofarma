@@ -32,7 +32,7 @@ generate: validate
 	swagger generate server --exclude-main -A server -t gen -f ./api/biofarma/result.yml --principal models.Principal
 	swagger generate client -A bing-maps -c gen/client/bing_maps_client -m gen/models -f ./api/bing_maps/result.yml
 
-create-file-migration:
+migrate-create-file:
 	go run cmd/cli/main.go migration create $(Arguments)
 
 migrate-up:
@@ -53,7 +53,7 @@ help:
 	@echo "make doc: Serve the Doc UI"
 	@echo "make run: Serve binary file"
 	@echo "make run-local: Serve main.go"
-	@echo "make create-file-migration: Create new file migration"
+	@echo "make migrate-create-file: Create new file migration"
 	@echo "make migrate-up: Migrate up"
 	@echo "make migrate-down: Migrate down"
 	@echo "make migrate-force: Fix dirty migration"

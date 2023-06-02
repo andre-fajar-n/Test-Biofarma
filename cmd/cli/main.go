@@ -13,6 +13,8 @@ import (
 const (
 	appName  = "Test Biofarma"
 	appUsage = "CLI to run this apps"
+
+	flagNamePath = "path"
 )
 
 func main() {
@@ -43,8 +45,16 @@ var (
 			return nil
 		},
 		Flags: []cli.Flag{
-			&cli.StringFlag{Name: "port"},
-			&cli.StringFlag{Name: "host"},
+			&cli.StringFlag{
+				Name:        "port",
+				Usage:       "server port",
+				DefaultText: "random port",
+			},
+			&cli.StringFlag{
+				Name:        "host",
+				Usage:       "server host",
+				DefaultText: "localhost",
+			},
 		},
 	}
 
@@ -62,9 +72,12 @@ var (
 		Action: func(ctx *cli.Context) error {
 			rt := runtime.NewRuntime()
 
-			rt.MigrateUp()
+			rt.MigrateUp(ctx.String(flagNamePath))
 
 			return nil
+		},
+		Flags: []cli.Flag{
+			&migrationFilePath,
 		},
 	}
 
@@ -74,9 +87,12 @@ var (
 		Action: func(ctx *cli.Context) error {
 			rt := runtime.NewRuntime()
 
-			rt.MigrateDown()
+			rt.MigrateDown(ctx.String(flagNamePath))
 
 			return nil
+		},
+		Flags: []cli.Flag{
+			&migrationFilePath,
 		},
 	}
 
@@ -86,9 +102,12 @@ var (
 		Action: func(ctx *cli.Context) error {
 			rt := runtime.NewRuntime()
 
-			rt.ForceLastestVersion()
+			rt.ForceLastestVersion(ctx.String(flagNamePath))
 
 			return nil
+		},
+		Flags: []cli.Flag{
+			&migrationFilePath,
 		},
 	}
 
@@ -105,9 +124,19 @@ var (
 			}
 
 			filename := args.First()
-			rt.CreateFileMigration(filename)
+			rt.CreateFileMigration(ctx.String(flagNamePath), filename)
 
 			return nil
 		},
+		Flags: []cli.Flag{
+			&migrationFilePath,
+		},
+	}
+
+	migrationFilePath = cli.StringFlag{
+		Name:        flagNamePath,
+		Usage:       "path where migration file placed",
+		DefaultText: "./internal/migrations",
+		Value:       "./internal/migrations",
 	}
 )

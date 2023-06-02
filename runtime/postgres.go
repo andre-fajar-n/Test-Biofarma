@@ -57,18 +57,18 @@ func (r *Runtime) db() *Runtime {
 	return r
 }
 
-func (r *Runtime) MigrateUp() {
-	r.prepareMigration("up")
+func (r *Runtime) MigrateUp(path string) {
+	r.prepareMigration(path, "up")
 }
 
-func (r *Runtime) MigrateDown() {
-	r.prepareMigration("down")
+func (r *Runtime) MigrateDown(path string) {
+	r.prepareMigration(path, "down")
 }
 
-func (r *Runtime) prepareMigration(migrationType string) {
+func (r *Runtime) prepareMigration(path, migrationType string) {
 	r.Logger.Info().Msgf("Initiate db migration %s", migrationType)
 
-	m := r.prepareMigrator()
+	m := r.prepareMigrator(path)
 	defer m.Close()
 
 	var err error
@@ -78,16 +78,21 @@ func (r *Runtime) prepareMigration(migrationType string) {
 	case "down":
 		err = m.Down()
 	}
-	if err != nil {
+	if err != nil && err != migrate.ErrNoChange {
 		r.Logger.Error().Err(err).Msgf("Error migration %s", migrationType)
 		log.Panicf("Error migration %s: %v", migrationType, err)
+	}
+
+	if err == migrate.ErrNoChange {
+		r.Logger.Info().Msg("There are no change migration")
+		return
 	}
 
 	r.Logger.Info().Msgf("Migrating %s db has been done", migrationType)
 }
 
-func (r *Runtime) ForceLastestVersion() {
-	m := r.prepareMigrator()
+func (r *Runtime) ForceLastestVersion(path string) {
+	m := r.prepareMigrator(path)
 	defer m.Close()
 
 	version, _, err := m.Version()
@@ -103,7 +108,7 @@ func (r *Runtime) ForceLastestVersion() {
 	}
 }
 
-func (r *Runtime) prepareMigrator() *migrate.Migrate {
+func (r *Runtime) prepareMigrator(path string) *migrate.Migrate {
 	sqlDB, err := r.Db.DB()
 	if err != nil {
 		r.Logger.Error().Err(err).Msg("Error return sql.DB")
@@ -116,7 +121,7 @@ func (r *Runtime) prepareMigrator() *migrate.Migrate {
 		log.Panicf("Error create instance: %v", err)
 	}
 
-	m, err := migrate.NewWithDatabaseInstance("file://./internal/migrations", "postgres", driver)
+	m, err := migrate.NewWithDatabaseInstance(fmt.Sprintf("file://%s", path), "postgres", driver)
 	if err != nil {
 		r.Logger.Error().Err(err).Msg("Error create new migrator")
 		log.Panicf("Error create new migrator: %v", err)
@@ -125,16 +130,19 @@ func (r *Runtime) prepareMigrator() *migrate.Migrate {
 	return m
 }
 
-func (r *Runtime) CreateFileMigration(name string) error {
+func (r *Runtime) CreateFileMigration(path, filename string) error {
 	version := time.Now().UTC().Format("20060102150405")
-	nameWithVersion := version + "_" + name
+	nameWithVersion := version + "_" + filename
+	formatFilename := "%s/%s.%s.sql"
+	filenameUp := fmt.Sprintf(formatFilename, path, nameWithVersion, "up")
+	filenameDown := fmt.Sprintf(formatFilename, path, nameWithVersion, "down")
 
-	if err := r.createFile(nameWithVersion, "up"); err != nil {
+	if err := r.createFile(filenameUp); err != nil {
 		r.Logger.Error().Err(err).Msg("error create file migration up")
 		return err
 	}
 
-	if err := r.createFile(nameWithVersion, "down"); err != nil {
+	if err := r.createFile(filenameDown); err != nil {
 		r.Logger.Error().Err(err).Msg("error create file migration down")
 		return err
 	}
@@ -142,8 +150,8 @@ func (r *Runtime) CreateFileMigration(name string) error {
 	return nil
 }
 
-func (r *Runtime) createFile(name, migrationType string) error {
-	f, err := os.Create(fmt.Sprintf("./internal/migrations/%s.%s.sql", name, migrationType))
+func (r *Runtime) createFile(filename string) error {
+	f, err := os.Create(filename)
 	if err != nil {
 		r.Logger.Error().Err(err).Msg("Error create file")
 		return err

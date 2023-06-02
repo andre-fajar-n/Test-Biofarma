@@ -13,6 +13,13 @@ basePath: /REST
 paths:
     /v1/Locations:
         get:
+            parameters:
+                - name: key
+                  in: query
+                  type: string
+                - type: string
+                  name: query
+                  in: query
             responses:
                 "200":
                     description: Success get data
@@ -28,59 +35,7 @@ paths:
                 - location
             summary: Find Location
             operationId: findLocation
-            parameters:
-                - type: string
-                  name: key
-                  in: query
-                - in: query
-                  type: string
-                  name: query
 definitions:
-    successGetLocationResourceSetsItemsResourcesItems:
-        type: object
-        properties:
-            address:
-                $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsAddress'
-            name:
-                type: string
-            point:
-                $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsPoint'
-        x-go-gen-location: models
-    successGetLocationResourceSetsItemsResourcesItemsAddress:
-        properties:
-            adminDistrict:
-                type: string
-            adminDistrict2:
-                type: string
-            countryRegion:
-                type: string
-            formattedAddress:
-                type: string
-            locality:
-                type: string
-            postalCode:
-                type: string
-            addressLine:
-                type: string
-        x-go-gen-location: models
-        type: object
-    successGetLocationResourceSetsItemsResourcesItemsPoint:
-        type: object
-        properties:
-            coordinates:
-                type: array
-                items:
-                    type: number
-                    format: float64
-        x-go-gen-location: models
-    error:
-        properties:
-            code:
-                type: integer
-            message:
-                type: string
-                example: error
-        type: object
     successGetLocation:
         type: object
         properties:
@@ -101,3 +56,48 @@ definitions:
                 items:
                     $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItems'
         x-go-gen-location: models
+    successGetLocationResourceSetsItemsResourcesItems:
+        properties:
+            name:
+                type: string
+            point:
+                $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsPoint'
+            address:
+                $ref: '#/definitions/successGetLocationResourceSetsItemsResourcesItemsAddress'
+        x-go-gen-location: models
+        type: object
+    successGetLocationResourceSetsItemsResourcesItemsAddress:
+        type: object
+        properties:
+            adminDistrict:
+                type: string
+            adminDistrict2:
+                type: string
+            countryRegion:
+                type: string
+            formattedAddress:
+                type: string
+            locality:
+                type: string
+            postalCode:
+                type: string
+            addressLine:
+                type: string
+        x-go-gen-location: models
+    successGetLocationResourceSetsItemsResourcesItemsPoint:
+        type: object
+        properties:
+            coordinates:
+                type: array
+                items:
+                    type: number
+                    format: float64
+        x-go-gen-location: models
+    error:
+        properties:
+            code:
+                type: integer
+            message:
+                type: string
+                example: error
+        type: object
